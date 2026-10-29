@@ -2,7 +2,7 @@
 ## Database Schema & Data Modeling Specification
 
 > **Database Engine:** MongoDB (v7.0+) with Mongoose ODM (v8.9+)  
-> **Status:** Proposed Schema Specification &bull; Ready for Implementation by Claude Pro  
+> **Status:** Implemented in `backend/src/models/` (phase 2) &bull; see §4 for deviations from this proposal  
 > **Source Datasets:** Grounded directly on fixtures in `data/processed/extracted/csv/`  
 
 ---
@@ -323,3 +323,28 @@ const AuditLogSchema = new mongoose.Schema({
    - Patches the `users.csv` duplicate key (`SYN-USR-REG-NORTHE` for North-East &rarr; `SYN-USR-REG-NE`).
    - Upserts institutions, bureaus, users, category matrix, cases, case actions, transfers, and ground truth pairs.
 3. **Step 3:** Add MongoDB compound indexes and verify with `db.collection.getIndexes()`.
+
+
+---
+
+## 4. Implementation Notes and Deviations (phase 2)
+
+The models in `backend/src/models/` follow this specification with these deliberate changes:
+
+| Area | Change | Reason |
+|---|---|---|
+| `cases.refs` | Stored as an **array** of strings (CSV value split on `;`), indexed | The shared-reference rule in Engine D2 needs to match individual references |
+| `cases.institution_id` | Required when `identity_status = VERIFIED`; must be empty otherwise | Uncertain identities are never linked to an institution |
+| `cases.assigned_officer` | `null` (not `''`) when unassigned; required once status is past `Received` | Matches the data; enforces the workflow |
+| `cases.design_note`, `cases.complainant_hash` | `design_note` is `select: false`; `complainant_hash` is excluded from API responses | `design_note` reveals generator ground truth; the hash is only for the engine |
+| `cases` text index | `subject` + `description` text index added | Reserved for future search; the API currently uses escaped regex search |
+| `users.password_hash` | Default `null`, `select: false` (no placeholder hash) | Auth is not implemented; no fake credentials are stored |
+| `users.source_user_id` | New field | Records the original ID when transformation T1 renamed a user |
+| `case_actions.action_key` | New unique field = SHA-256 of the row | The CSV has no action ID; makes re-import idempotent and collapses exact duplicates |
+| `transfers.transfer_key` | New unique field = `case_id@requested_at` | The CSV has no transfer ID |
+| `overlap_ground_truth` | New model (`OverlapGroundTruth`) with unique `pair_id` and unique (`case_a`, `case_b`) | Evaluation labels for Engine D2; the engine must not read it |
+| `import_meta` | Hidden sub-document on every imported record (source file/row/hash, batches, transformations) | Provenance and idempotent re-import |
+| `import_batches` | New collection, one document per import run | Audit of every import (file hashes, counts, rejections) |
+| Indexes | Created with `createIndexes()` by the seed script; server start-up uses Mongoose `autoIndex` | Never drops existing indexes |
+
+`overlap_candidates`, `case_embeddings`, `notifications` and `audit_logs` exist with their indexes but are empty until later phases. `case_links` (shown in the ER diagram) is not implemented yet (phase 5).
