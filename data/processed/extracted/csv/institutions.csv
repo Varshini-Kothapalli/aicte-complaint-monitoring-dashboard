@@ -1,0 +1,62 @@
+institution_id,aicte_permanent_id,name,stream,state,district,region,ownership,established,provenance
+SYN-INST-0001,SYN-1-100037,ABC Engineering College,Engineering,Maharashtra,Pune,West,Private-Self Financing,1999,SYNTHETIC
+SYN-INST-0002,SYN-1-100074,BCD Institute of Management,Management,Punjab,Ludhiana,North-West,Government Aided,2016,SYNTHETIC
+SYN-INST-0003,SYN-1-100111,CDE College of Pharmacy,Pharmacy,Maharashtra,Nagpur,West,Government Aided,2000,SYNTHETIC
+SYN-INST-0004,SYN-1-100148,DEF Engineering College,Engineering,Telangana,Warangal,South-Central,Private-Self Financing,1992,SYNTHETIC
+SYN-INST-0005,SYN-1-100185,EFG Engineering College,Engineering,West Bengal,Durgapur,Eastern,Private-Self Financing,2013,SYNTHETIC
+SYN-INST-0006,SYN-1-100222,FGH Engineering College,Engineering,Maharashtra,Aurangabad,West,Government Aided,2005,SYNTHETIC
+SYN-INST-0007,SYN-1-100259,GHI Engineering College,Engineering,Andhra Pradesh,Guntur,South-Central,Government,2007,SYNTHETIC
+SYN-INST-0008,SYN-1-100296,HIJ School of Architecture,Architecture,Odisha,Cuttack,Eastern,Government,2009,SYNTHETIC
+SYN-INST-0009,SYN-1-100333,IJK School of Architecture,Architecture,Karnataka,Belagavi,South-West,Private-Self Financing,2006,SYNTHETIC
+SYN-INST-0010,SYN-1-100370,JKL Engineering College,Engineering,Uttar Pradesh,Lucknow,Northern,Government,2003,SYNTHETIC
+SYN-INST-0011,SYN-1-100407,KLM Institute of Technology,Engineering,Assam,Guwahati,North-East,Government,1986,SYNTHETIC
+SYN-INST-0012,SYN-1-100444,LMN Institute of Management,Management,Karnataka,Mysuru,South-West,Government,2008,SYNTHETIC
+SYN-INST-0013,SYN-1-100481,MNO Institute of Technology,Engineering,Uttar Pradesh,Agra,Northern,Private-Self Financing,2010,SYNTHETIC
+SYN-INST-0014,SYN-1-100518,NOP Institute of Management,Management,Madhya Pradesh,Indore,Central,Government Aided,1992,SYNTHETIC
+SYN-INST-0015,SYN-1-100555,OPQ Institute of Technology,Engineering,Kerala,Thrissur,South-West,Government Aided,2010,SYNTHETIC
+SYN-INST-0016,SYN-1-100592,PQR Institute of Technology,Engineering,Maharashtra,Pune,West,Government,2011,SYNTHETIC
+SYN-INST-0017,SYN-1-100629,QRS Polytechnic,Diploma,Gujarat,Vadodara,Central,Government Aided,2017,SYNTHETIC
+SYN-INST-0018,SYN-1-100666,RST Institute of Technology,Engineering,Tamil Nadu,Coimbatore,South,Private-Self Financing,1999,SYNTHETIC
+SYN-INST-0019,SYN-1-100703,STU College of Pharmacy,Pharmacy,Rajasthan,Udaipur,North-West,Private-Self Financing,2018,SYNTHETIC
+SYN-INST-0020,SYN-1-100740,TUV Institute of Management,Management,Maharashtra,Pune,West,Private-Self Financing,2012,SYNTHETIC
+SYN-INST-0021,SYN-1-100777,UVW Institute of Technology,Engineering,Tamil Nadu,Madurai,South,Government Aided,1999,SYNTHETIC
+SYN-INST-0022,SYN-1-100814,VWX Institute of Management,Management,Punjab,Ludhiana,North-West,Private-Self Financing,2014,SYNTHETIC
+SYN-INST-0023,SYN-1-100851,WXY Polytechnic,Diploma,Maharashtra,Nagpur,West,Government,2010,SYNTHETIC
+SYN-INST-0024,SYN-1-100888,XYZ Polytechnic,Diploma,Telangana,Warangal,South-Central,Government,2017,SYNTHETIC
+SYN-INST-0025,SYN-1-100925,KLN Polytechnic,Diploma,West Bengal,Durgapur,Eastern,Government Aided,2012,SYNTHETIC
+SYN-INST-0026,SYN-1-100962,RSV Engineering College,Engineering,Maharashtra,Aurangabad,West,Government,1985,SYNTHETIC
+SYN-INST-0027,SYN-1-100999,DMP Engineering College,Engineering,Andhra Pradesh,Guntur,South-Central,Government Aided,2018,SYNTHETIC
+SYN-INST-0028,SYN-1-101036,GTW School of Architecture,Architecture,Odisha,Cuttack,Eastern,Government,1997,SYNTHETIC
+SYN-INST-0029,SYN-1-101073,BHJ Engineering College,Engineering,Karnataka,Belagavi,South-West,Government Aided,2014,SYNTHETIC
+SYN-INST-0030,SYN-1-101110,CFK Institute of Technology,Engineering,Uttar Pradesh,Lucknow,Northern,Government Aided,2012,SYNTHETIC
+SYN-INST-0031,SYN-1-101147,ENQ Polytechnic,Diploma,Assam,Guwahati,North-East,Private-Self Financing,2003,SYNTHETIC
+SYN-INST-0032,SYN-1-101184,ART Engineering College,Engineering,Karnataka,Mysuru,South-West,Private-Self Financing,2013,SYNTHETIC
+SYN-INST-0033,SYN-1-101221,LPS Polytechnic,Diploma,Uttar Pradesh,Agra,Northern,Government,2013,SYNTHETIC
+SYN-INST-0034,SYN-1-101258,MVY School of Architecture,Architecture,Madhya Pradesh,Indore,Central,Private-Self Financing,2012,SYNTHETIC
+SYN-INST-0035,SYN-1-101295,FJR Institute of Management,Management,Kerala,Thrissur,South-West,Government Aided,1989,SYNTHETIC
+SYN-INST-0036,SYN-1-101332,HNT Polytechnic,Diploma,Rajasthan,Jaipur,North-West,Government Aided,2008,SYNTHETIC
+SYN-INST-0037,SYN-1-101369,ADG Engineering College,Engineering,Gujarat,Vadodara,Central,Government Aided,1994,SYNTHETIC
+SYN-INST-0038,SYN-1-101406,BEK Institute of Technology,Engineering,Tamil Nadu,Coimbatore,South,Private-Self Financing,1990,SYNTHETIC
+SYN-INST-0039,SYN-1-101443,CMS Engineering College,Engineering,Rajasthan,Udaipur,North-West,Private-Self Financing,1997,SYNTHETIC
+SYN-INST-0040,SYN-1-101480,DHV Engineering College,Engineering,Maharashtra,Pune,West,Private-Self Financing,2002,SYNTHETIC
+SYN-INST-0041,SYN-1-101517,ELR Polytechnic,Diploma,Tamil Nadu,Madurai,South,Government,1994,SYNTHETIC
+SYN-INST-0042,SYN-1-101554,GKP Engineering College,Engineering,Punjab,Ludhiana,North-West,Government Aided,1993,SYNTHETIC
+SYN-INST-0043,SYN-1-101591,JNW Institute of Technology,Engineering,Maharashtra,Nagpur,West,Government Aided,1993,SYNTHETIC
+SYN-INST-0044,SYN-1-101628,KQU School of Architecture,Architecture,Telangana,Warangal,South-Central,Government,1990,SYNTHETIC
+SYN-INST-0045,SYN-1-101665,PSY Institute of Technology,Engineering,West Bengal,Durgapur,Eastern,Private-Self Financing,1993,SYNTHETIC
+SYN-INST-0046,SYN-1-101702,TVZ College of Pharmacy,Pharmacy,Maharashtra,Aurangabad,West,Government,2017,SYNTHETIC
+SYN-INST-0047,SYN-1-101739,AKM Institute of Technology,Engineering,Andhra Pradesh,Guntur,South-Central,Private-Self Financing,2018,SYNTHETIC
+SYN-INST-0048,SYN-1-101776,BLQ Institute of Management,Management,Odisha,Cuttack,Eastern,Government Aided,1985,SYNTHETIC
+SYN-INST-0049,SYN-1-101813,CNR School of Architecture,Architecture,Karnataka,Belagavi,South-West,Government Aided,1989,SYNTHETIC
+SYN-INST-0050,SYN-1-101850,DSX Engineering College,Engineering,Uttar Pradesh,Lucknow,Northern,Government,2007,SYNTHETIC
+SYN-INST-0051,SYN-1-101887,FHM School of Architecture,Architecture,Assam,Guwahati,North-East,Private-Self Financing,1986,SYNTHETIC
+SYN-INST-0052,SYN-1-101924,GNU Institute of Technology,Engineering,Karnataka,Mysuru,South-West,Government,2004,SYNTHETIC
+SYN-INST-0053,SYN-1-101961,HPW Institute of Technology,Engineering,Uttar Pradesh,Agra,Northern,Private-Self Financing,2016,SYNTHETIC
+SYN-INST-0054,SYN-1-101998,JMQ School of Architecture,Architecture,Madhya Pradesh,Indore,Central,Private-Self Financing,1994,SYNTHETIC
+SYN-INST-0055,SYN-1-102035,ABD Polytechnic,Diploma,Kerala,Thrissur,South-West,Private-Self Financing,2012,SYNTHETIC
+SYN-INST-0056,SYN-1-102072,LMO Polytechnic,Diploma,Rajasthan,Jaipur,North-West,Government Aided,1999,SYNTHETIC
+SYN-INST-0057,SYN-1-102109,PQS Polytechnic,Diploma,Gujarat,Vadodara,Central,Private-Self Financing,2010,SYNTHETIC
+SYN-INST-0058,SYN-1-102146,UVX Engineering College,Engineering,Tamil Nadu,Coimbatore,South,Private-Self Financing,1987,SYNTHETIC
+SYN-INST-0059,SYN-1-102183,NOR Polytechnic,Diploma,Rajasthan,Udaipur,North-West,Private-Self Financing,2013,SYNTHETIC
+SYN-INST-0060,SYN-1-102220,QRT Institute of Management,Management,Maharashtra,Pune,West,Private-Self Financing,2015,SYNTHETIC
+SYN-INST-0061,SYN-1-102294,PQR Institute of Technology,Engineering,Karnataka,Belagavi,South-West,Private-Self Financing,2009,SYNTHETIC

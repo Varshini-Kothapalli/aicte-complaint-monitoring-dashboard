@@ -1,0 +1,14 @@
+category_a,bureau_a,category_b,bureau_b,rule_points,provenance
+fee_refund,PGRC,fee_regulation_compliance,RB,0.25,SYNTHETIC
+certificate_withheld,PGRC,fee_regulation_compliance,RB,0.25,SYNTHETIC
+salary_non_payment,PGRC,faculty_norms_compliance,RB,0.25,SYNTHETIC
+admission_irregularity,PGRC,intake_violation,RB,0.25,SYNTHETIC
+admission_irregularity,PGRC,unapproved_course,RB,0.25,SYNTHETIC
+infrastructure_deficiency,PGRC,infrastructure_norms,RB,0.25,SYNTHETIC
+infrastructure_deficiency,PGRC,approval_deficiency,AB,0.25,SYNTHETIC
+faculty_profile_misuse,PGRC,fake_faculty,RB,0.25,SYNTHETIC
+faculty_profile_misuse,PGRC,faculty_norms_compliance,RB,0.25,SYNTHETIC
+intake_violation,RB,approval_condition_noncompliance,AB,0.25,SYNTHETIC
+infrastructure_norms,RB,approval_deficiency,AB,0.25,SYNTHETIC
+fake_faculty,RB,approval_deficiency,AB,0.25,SYNTHETIC
+unapproved_course,RB,approval_condition_noncompliance,AB,0.25,SYNTHETIC

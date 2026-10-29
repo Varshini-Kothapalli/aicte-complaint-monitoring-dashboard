@@ -1,0 +1,26 @@
+case_id,from_bureau,to_bureau,reason,requested_by,requested_at,accepted_by,accepted_at,state,provenance
+SYN-PGRC-2026-0018,AB,PGRC,Subject matter falls under receiving Bureau,SYN-USR-AB-H,2026-08-31 13:00:00,SYN-USR-PGRC-H,2026-09-02 13:00:00,accepted,SYNTHETIC
+SYN-PGRC-2026-0026,AB,PGRC,Subject matter falls under receiving Bureau,SYN-USR-AB-H,2026-09-04 09:00:00,SYN-USR-PGRC-H,2026-09-05 09:00:00,accepted,SYNTHETIC
+SYN-AB-2026-0030,PGRC,AB,Subject matter falls under receiving Bureau,SYN-USR-PGRC-H,2026-10-10 10:00:00,SYN-USR-AB-H,2026-10-11 10:00:00,accepted,SYNTHETIC
+SYN-PGRC-2026-0102,AB,PGRC,Subject matter falls under receiving Bureau,SYN-USR-AB-H,2026-09-11 11:00:00,SYN-USR-PGRC-H,2026-09-12 11:00:00,accepted,SYNTHETIC
+SYN-AB-2026-0111,PGRC,AB,Subject matter falls under receiving Bureau,SYN-USR-PGRC-H,2026-10-25 11:00:00,SYN-USR-AB-H,2026-10-27 11:00:00,accepted,SYNTHETIC
+SYN-PGRC-2025-0264,AB,PGRC,Subject matter falls under receiving Bureau,SYN-USR-AB-H,2025-12-19 09:00:00,SYN-USR-PGRC-H,2025-12-20 09:00:00,accepted,SYNTHETIC
+SYN-PGRC-2026-0357,AB,PGRC,Subject matter falls under receiving Bureau,SYN-USR-AB-H,2026-06-28 11:00:00,SYN-USR-PGRC-H,2026-06-29 11:00:00,accepted,SYNTHETIC
+SYN-AB-2026-0391,PGRC,AB,Subject matter falls under receiving Bureau,SYN-USR-PGRC-H,2026-06-14 11:00:00,SYN-USR-AB-H,2026-06-17 11:00:00,accepted,SYNTHETIC
+SYN-PGRC-2026-0417,AB,PGRC,Subject matter falls under receiving Bureau,SYN-USR-AB-H,2026-08-23 16:00:00,SYN-USR-PGRC-H,2026-08-26 16:00:00,accepted,SYNTHETIC
+SYN-PGRC-2026-0430,AB,PGRC,Subject matter falls under receiving Bureau,SYN-USR-AB-H,2026-10-18 13:00:00,SYN-USR-PGRC-H,2026-10-19 13:00:00,accepted,SYNTHETIC
+SYN-PGRC-2026-0448,AB,PGRC,Subject matter falls under receiving Bureau,SYN-USR-AB-H,2026-09-04 16:00:00,SYN-USR-PGRC-H,2026-09-05 16:00:00,accepted,SYNTHETIC
+SYN-PGRC-2026-0493,AB,PGRC,Subject matter falls under receiving Bureau,SYN-USR-AB-H,2026-04-02 12:00:00,SYN-USR-PGRC-H,2026-04-04 12:00:00,accepted,SYNTHETIC
+SYN-AB-2026-0499,PGRC,AB,Subject matter falls under receiving Bureau,SYN-USR-PGRC-H,2026-04-22 10:00:00,SYN-USR-AB-H,2026-04-23 10:00:00,accepted,SYNTHETIC
+SYN-AB-2026-0542,PGRC,AB,Subject matter falls under receiving Bureau,SYN-USR-PGRC-H,2026-08-20 15:00:00,SYN-USR-AB-H,2026-08-21 15:00:00,accepted,SYNTHETIC
+SYN-PGRC-2026-0548,AB,PGRC,Subject matter falls under receiving Bureau,SYN-USR-AB-H,2026-08-17 16:00:00,SYN-USR-PGRC-H,2026-08-18 16:00:00,accepted,SYNTHETIC
+SYN-AB-2026-0564,PGRC,AB,Subject matter falls under receiving Bureau,SYN-USR-PGRC-H,2026-08-16 15:00:00,SYN-USR-AB-H,2026-08-18 15:00:00,accepted,SYNTHETIC
+SYN-PGRC-2026-0630,AB,PGRC,Subject matter falls under receiving Bureau,SYN-USR-AB-H,2026-10-17 12:00:00,SYN-USR-PGRC-H,2026-10-20 12:00:00,accepted,SYNTHETIC
+SYN-PGRC-2026-0643,AB,PGRC,Subject matter falls under receiving Bureau,SYN-USR-AB-H,2026-05-12 10:00:00,SYN-USR-PGRC-H,2026-05-15 10:00:00,accepted,SYNTHETIC
+SYN-PGRC-2026-0665,AB,PGRC,Subject matter falls under receiving Bureau,SYN-USR-AB-H,2026-03-11 09:00:00,SYN-USR-PGRC-H,2026-03-12 09:00:00,accepted,SYNTHETIC
+SYN-AB-2026-0680,PGRC,AB,Subject matter falls under receiving Bureau,SYN-USR-PGRC-H,2026-10-29 15:00:00,SYN-USR-AB-H,2026-11-01 15:00:00,accepted,SYNTHETIC
+SYN-PGRC-2026-0700,AB,PGRC,Subject matter falls under receiving Bureau,SYN-USR-AB-H,2026-04-13 11:00:00,SYN-USR-PGRC-H,2026-04-15 11:00:00,accepted,SYNTHETIC
+SYN-AB-2026-0753,PGRC,AB,Subject matter falls under receiving Bureau,SYN-USR-PGRC-H,2026-10-14 12:00:00,SYN-USR-AB-H,2026-10-15 12:00:00,accepted,SYNTHETIC
+SYN-PGRC-2026-0757,AB,PGRC,Subject matter falls under receiving Bureau,SYN-USR-AB-H,2026-06-06 17:00:00,SYN-USR-PGRC-H,2026-06-07 17:00:00,accepted,SYNTHETIC
+SYN-PGRC-2026-0779,AB,PGRC,Subject matter falls under receiving Bureau,SYN-USR-AB-H,2026-08-21 11:00:00,SYN-USR-PGRC-H,2026-08-24 11:00:00,accepted,SYNTHETIC
+SYN-PGRC-2026-0801,AB,PGRC,Subject matter falls under receiving Bureau,SYN-USR-AB-H,2026-04-24 09:00:00,SYN-USR-PGRC-H,2026-04-25 09:00:00,accepted,SYNTHETIC

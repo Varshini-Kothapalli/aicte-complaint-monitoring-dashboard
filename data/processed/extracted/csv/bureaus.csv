@@ -1,0 +1,4 @@
+code,name,sla_days_default,provenance,note
+PGRC,Public Grievance Redressal Cell,30,SYNTHETIC,"Name from the problem statement; SLA values are synthetic configuration, not AICTE timelines"
+RB,Regulation Bureau,60,SYNTHETIC,Name from the problem statement; SLA synthetic
+AB,Approval Bureau,45,SYNTHETIC,Example of an 'other concerned Bureau'; SLA synthetic

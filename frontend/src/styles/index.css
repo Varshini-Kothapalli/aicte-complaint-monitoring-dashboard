@@ -1,0 +1,122 @@
+:root {
+  --primary-navy: #1F3A5F;
+  --primary-navy-dark: #14273E;
+  --primary-navy-light: #2A4D7C;
+  --accent-gold: #D97706;
+  --accent-gold-light: #FEF3C7;
+  --bg-slate: #F8FAFC;
+  --bg-card: #FFFFFF;
+  --bg-sidebar: #0F172A;
+  --border-color: #E2E8F0;
+  --border-subtle: #EDF2F7;
+  
+  --text-main: #0F172A;
+  --text-muted: #64748B;
+  --text-light: #94A3B8;
+  --text-inverse: #FFFFFF;
+  
+  --status-disposed: #059669;
+  --status-disposed-bg: #ECFDF5;
+  --status-process: #2563EB;
+  --status-process-bg: #EFF6FF;
+  --status-action: #D97706;
+  --status-action-bg: #FFFBEB;
+  --status-assigned: #7C3AED;
+  --status-assigned-bg: #F5F3FF;
+  --status-received: #64748B;
+  --status-received-bg: #F1F5F9;
+  --status-overdue: #DC2626;
+  --status-overdue-bg: #FEF2F2;
+  
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+  
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: var(--bg-slate);
+  color: var(--text-main);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  background: none;
+}
+
+input, select, textarea {
+  font-family: inherit;
+  font-size: 0.875rem;
+}
+
+/* Watermark & Provenance Badges */
+.provenance-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  padding: 0.125rem 0.5rem;
+  border-radius: 9999px;
+  text-transform: uppercase;
+}
+
+.provenance-synthetic {
+  background-color: #F3E8FF;
+  color: #7C3AED;
+  border: 1px solid #DDD6FE;
+}
+
+.provenance-unverified {
+  background-color: #FEF3C7;
+  color: #B45309;
+  border: 1px solid #FDE68A;
+}
+
+.provenance-verified {
+  background-color: #DCFCE7;
+  color: #15803D;
+  border: 1px solid #BBF7D0;
+}
+
+.provenance-derived {
+  background-color: #E0F2FE;
+  color: #0369A1;
+  border: 1px solid #BAE6FD;
+}
+
+/* System Banner */
+.demo-banner {
+  background: linear-gradient(90deg, #1E293B, #0F172A);
+  color: #E2E8F0;
+  font-size: 0.75rem;
+  padding: 0.375rem 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.demo-banner span.highlight {
+  color: #FCD34D;
+  font-weight: 600;
+}

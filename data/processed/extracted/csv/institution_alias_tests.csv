@@ -1,0 +1,131 @@
+alias_test_id,raw_name,raw_location,expected_institution_id,expected_decision,case_note,provenance
+SYN-ALIAS-001,abc engineering college,,SYN-INST-0001,VERIFIED,"lower case, no location",SYNTHETIC
+SYN-ALIAS-002,ABC Engg. Coll.,Pune,SYN-INST-0001,VERIFIED,abbreviation,SYNTHETIC
+SYN-ALIAS-003,BCD Inst. of Mgmt.,Ludhiana,SYN-INST-0002,VERIFIED,abbreviation,SYNTHETIC
+SYN-ALIAS-004,bcd institute of management,,SYN-INST-0002,VERIFIED,"lower case, no location",SYNTHETIC
+SYN-ALIAS-005,cde college of pharmacy,,SYN-INST-0003,VERIFIED,"lower case, no location",SYNTHETIC
+SYN-ALIAS-006,CDE Coll. of Pharm.,Nagpur,SYN-INST-0003,VERIFIED,abbreviation,SYNTHETIC
+SYN-ALIAS-007,DEF Engg. Coll.,Warangal,SYN-INST-0004,VERIFIED,abbreviation,SYNTHETIC
+SYN-ALIAS-008,def engineering college,,SYN-INST-0004,VERIFIED,"lower case, no location",SYNTHETIC
+SYN-ALIAS-009,"E.F.G. Engineering College, Durgapur",Durgapur,SYN-INST-0005,VERIFIED,dotted initials + city,SYNTHETIC
+SYN-ALIAS-010,efg engineering college,,SYN-INST-0005,VERIFIED,"lower case, no location",SYNTHETIC
+SYN-ALIAS-011,"F.G.H. Engineering College, Aurangabad",Aurangabad,SYN-INST-0006,VERIFIED,dotted initials + city,SYNTHETIC
+SYN-ALIAS-012,fgh engineering college,,SYN-INST-0006,VERIFIED,"lower case, no location",SYNTHETIC
+SYN-ALIAS-013,GHI Engg. Coll.,Guntur,SYN-INST-0007,VERIFIED,abbreviation,SYNTHETIC
+SYN-ALIAS-014,"G.H.I. Engineering College, Guntur",Guntur,SYN-INST-0007,VERIFIED,dotted initials + city,SYNTHETIC
+SYN-ALIAS-015,"H.I.J. School of Architecture, Cuttack",Cuttack,SYN-INST-0008,VERIFIED,dotted initials + city,SYNTHETIC
+SYN-ALIAS-016,HIJ School of Architecture,Cuttack,SYN-INST-0008,VERIFIED,abbreviation,SYNTHETIC
+SYN-ALIAS-017,"I.J.K. School of Architecture, Belagavi",Belagavi,SYN-INST-0009,VERIFIED,dotted initials + city,SYNTHETIC
+SYN-ALIAS-018,IJK School of Architecture,Belagavi,SYN-INST-0009,VERIFIED,abbreviation,SYNTHETIC
+SYN-ALIAS-019,"J.K.L. Engineering College, Lucknow",Lucknow,SYN-INST-0010,VERIFIED,dotted initials + city,SYNTHETIC
+SYN-ALIAS-020,jkl engineering college,,SYN-INST-0010,VERIFIED,"lower case, no location",SYNTHETIC
+SYN-ALIAS-021,"K.L.M. Institute of Technology, Guwahati",Guwahati,SYN-INST-0011,VERIFIED,dotted initials + city,SYNTHETIC
+SYN-ALIAS-022,klm institute of technology,,SYN-INST-0011,VERIFIED,"lower case, no location",SYNTHETIC
+SYN-ALIAS-023,"L.M.N. Institute of Management, Mysuru",Mysuru,SYN-INST-0012,VERIFIED,dotted initials + city,SYNTHETIC
+SYN-ALIAS-024,lmn institute of management,,SYN-INST-0012,VERIFIED,"lower case, no location",SYNTHETIC
+SYN-ALIAS-025,MNO Inst. of Tech.,Agra,SYN-INST-0013,VERIFIED,abbreviation,SYNTHETIC
+SYN-ALIAS-026,"M.N.O. Institute of Technology, Agra",Agra,SYN-INST-0013,VERIFIED,dotted initials + city,SYNTHETIC
+SYN-ALIAS-027,nop institute of management,,SYN-INST-0014,VERIFIED,"lower case, no location",SYNTHETIC
+SYN-ALIAS-028,"N.O.P. Institute of Management, Indore",Indore,SYN-INST-0014,VERIFIED,dotted initials + city,SYNTHETIC
+SYN-ALIAS-029,"O.P.Q. Institute of Technology, Thrissur",Thrissur,SYN-INST-0015,VERIFIED,dotted initials + city,SYNTHETIC
+SYN-ALIAS-030,OPQ Inst. of Tech.,Thrissur,SYN-INST-0015,VERIFIED,abbreviation,SYNTHETIC
+SYN-ALIAS-031,pqr institute of technology,,SYN-INST-0016,VERIFIED,"lower case, no location",SYNTHETIC
+SYN-ALIAS-032,"P.Q.R. Institute of Technology, Pune",Pune,SYN-INST-0016,VERIFIED,dotted initials + city,SYNTHETIC
+SYN-ALIAS-033,QRS Polytechnic,Vadodara,SYN-INST-0017,VERIFIED,abbreviation,SYNTHETIC
+SYN-ALIAS-034,qrs polytechnic,,SYN-INST-0017,VERIFIED,"lower case, no location",SYNTHETIC
+SYN-ALIAS-035,RST Inst. of Tech.,Coimbatore,SYN-INST-0018,VERIFIED,abbreviation,SYNTHETIC
+SYN-ALIAS-036,rst institute of technology,,SYN-INST-0018,VERIFIED,"lower case, no location",SYNTHETIC
+SYN-ALIAS-037,STU Coll. of Pharm.,Udaipur,SYN-INST-0019,VERIFIED,abbreviation,SYNTHETIC
+SYN-ALIAS-038,"S.T.U. College of Pharmacy, Udaipur",Udaipur,SYN-INST-0019,VERIFIED,dotted initials + city,SYNTHETIC
+SYN-ALIAS-039,tuv institute of management,,SYN-INST-0020,VERIFIED,"lower case, no location",SYNTHETIC
+SYN-ALIAS-040,"T.U.V. Institute of Management, Pune",Pune,SYN-INST-0020,VERIFIED,dotted initials + city,SYNTHETIC
+SYN-ALIAS-041,"U.V.W. Institute of Technology, Madurai",Madurai,SYN-INST-0021,VERIFIED,dotted initials + city,SYNTHETIC
+SYN-ALIAS-042,UVW Inst. of Tech.,Madurai,SYN-INST-0021,VERIFIED,abbreviation,SYNTHETIC
+SYN-ALIAS-043,VWX Inst. of Mgmt.,Ludhiana,SYN-INST-0022,VERIFIED,abbreviation,SYNTHETIC
+SYN-ALIAS-044,"V.W.X. Institute of Management, Ludhiana",Ludhiana,SYN-INST-0022,VERIFIED,dotted initials + city,SYNTHETIC
+SYN-ALIAS-045,WXY Polytechnic,Nagpur,SYN-INST-0023,VERIFIED,abbreviation,SYNTHETIC
+SYN-ALIAS-046,"W.X.Y. Polytechnic, Nagpur",Nagpur,SYN-INST-0023,VERIFIED,dotted initials + city,SYNTHETIC
+SYN-ALIAS-047,xyz polytechnic,,SYN-INST-0024,VERIFIED,"lower case, no location",SYNTHETIC
+SYN-ALIAS-048,XYZ Polytechnic,Warangal,SYN-INST-0024,VERIFIED,abbreviation,SYNTHETIC
+SYN-ALIAS-049,KLN Polytechnic,Durgapur,SYN-INST-0025,VERIFIED,abbreviation,SYNTHETIC
+SYN-ALIAS-050,"K.L.N. Polytechnic, Durgapur",Durgapur,SYN-INST-0025,VERIFIED,dotted initials + city,SYNTHETIC
+SYN-ALIAS-051,rsv engineering college,,SYN-INST-0026,VERIFIED,"lower case, no location",SYNTHETIC
+SYN-ALIAS-052,RSV Engg. Coll.,Aurangabad,SYN-INST-0026,VERIFIED,abbreviation,SYNTHETIC
+SYN-ALIAS-053,dmp engineering college,,SYN-INST-0027,VERIFIED,"lower case, no location",SYNTHETIC
+SYN-ALIAS-054,"D.M.P. Engineering College, Guntur",Guntur,SYN-INST-0027,VERIFIED,dotted initials + city,SYNTHETIC
+SYN-ALIAS-055,gtw school of architecture,,SYN-INST-0028,VERIFIED,"lower case, no location",SYNTHETIC
+SYN-ALIAS-056,"G.T.W. School of Architecture, Cuttack",Cuttack,SYN-INST-0028,VERIFIED,dotted initials + city,SYNTHETIC
+SYN-ALIAS-057,bhj engineering college,,SYN-INST-0029,VERIFIED,"lower case, no location",SYNTHETIC
+SYN-ALIAS-058,BHJ Engg. Coll.,Belagavi,SYN-INST-0029,VERIFIED,abbreviation,SYNTHETIC
+SYN-ALIAS-059,CFK Inst. of Tech.,Lucknow,SYN-INST-0030,VERIFIED,abbreviation,SYNTHETIC
+SYN-ALIAS-060,"C.F.K. Institute of Technology, Lucknow",Lucknow,SYN-INST-0030,VERIFIED,dotted initials + city,SYNTHETIC
+SYN-ALIAS-061,ENQ Polytechnic,Guwahati,SYN-INST-0031,VERIFIED,abbreviation,SYNTHETIC
+SYN-ALIAS-062,"E.N.Q. Polytechnic, Guwahati",Guwahati,SYN-INST-0031,VERIFIED,dotted initials + city,SYNTHETIC
+SYN-ALIAS-063,ART Engg. Coll.,Mysuru,SYN-INST-0032,VERIFIED,abbreviation,SYNTHETIC
+SYN-ALIAS-064,art engineering college,,SYN-INST-0032,VERIFIED,"lower case, no location",SYNTHETIC
+SYN-ALIAS-065,lps polytechnic,,SYN-INST-0033,VERIFIED,"lower case, no location",SYNTHETIC
+SYN-ALIAS-066,LPS Polytechnic,Agra,SYN-INST-0033,VERIFIED,abbreviation,SYNTHETIC
+SYN-ALIAS-067,"M.V.Y. School of Architecture, Indore",Indore,SYN-INST-0034,VERIFIED,dotted initials + city,SYNTHETIC
+SYN-ALIAS-068,MVY School of Architecture,Indore,SYN-INST-0034,VERIFIED,abbreviation,SYNTHETIC
+SYN-ALIAS-069,fjr institute of management,,SYN-INST-0035,VERIFIED,"lower case, no location",SYNTHETIC
+SYN-ALIAS-070,FJR Inst. of Mgmt.,Thrissur,SYN-INST-0035,VERIFIED,abbreviation,SYNTHETIC
+SYN-ALIAS-071,hnt polytechnic,,SYN-INST-0036,VERIFIED,"lower case, no location",SYNTHETIC
+SYN-ALIAS-072,"H.N.T. Polytechnic, Jaipur",Jaipur,SYN-INST-0036,VERIFIED,dotted initials + city,SYNTHETIC
+SYN-ALIAS-073,"A.D.G. Engineering College, Vadodara",Vadodara,SYN-INST-0037,VERIFIED,dotted initials + city,SYNTHETIC
+SYN-ALIAS-074,ADG Engg. Coll.,Vadodara,SYN-INST-0037,VERIFIED,abbreviation,SYNTHETIC
+SYN-ALIAS-075,"B.E.K. Institute of Technology, Coimbatore",Coimbatore,SYN-INST-0038,VERIFIED,dotted initials + city,SYNTHETIC
+SYN-ALIAS-076,bek institute of technology,,SYN-INST-0038,VERIFIED,"lower case, no location",SYNTHETIC
+SYN-ALIAS-077,CMS Engg. Coll.,Udaipur,SYN-INST-0039,VERIFIED,abbreviation,SYNTHETIC
+SYN-ALIAS-078,"C.M.S. Engineering College, Udaipur",Udaipur,SYN-INST-0039,VERIFIED,dotted initials + city,SYNTHETIC
+SYN-ALIAS-079,"D.H.V. Engineering College, Pune",Pune,SYN-INST-0040,VERIFIED,dotted initials + city,SYNTHETIC
+SYN-ALIAS-080,DHV Engg. Coll.,Pune,SYN-INST-0040,VERIFIED,abbreviation,SYNTHETIC
+SYN-ALIAS-081,ELR Polytechnic,Madurai,SYN-INST-0041,VERIFIED,abbreviation,SYNTHETIC
+SYN-ALIAS-082,"E.L.R. Polytechnic, Madurai",Madurai,SYN-INST-0041,VERIFIED,dotted initials + city,SYNTHETIC
+SYN-ALIAS-083,"G.K.P. Engineering College, Ludhiana",Ludhiana,SYN-INST-0042,VERIFIED,dotted initials + city,SYNTHETIC
+SYN-ALIAS-084,gkp engineering college,,SYN-INST-0042,VERIFIED,"lower case, no location",SYNTHETIC
+SYN-ALIAS-085,JNW Inst. of Tech.,Nagpur,SYN-INST-0043,VERIFIED,abbreviation,SYNTHETIC
+SYN-ALIAS-086,jnw institute of technology,,SYN-INST-0043,VERIFIED,"lower case, no location",SYNTHETIC
+SYN-ALIAS-087,KQU School of Architecture,Warangal,SYN-INST-0044,VERIFIED,abbreviation,SYNTHETIC
+SYN-ALIAS-088,kqu school of architecture,,SYN-INST-0044,VERIFIED,"lower case, no location",SYNTHETIC
+SYN-ALIAS-089,PSY Inst. of Tech.,Durgapur,SYN-INST-0045,VERIFIED,abbreviation,SYNTHETIC
+SYN-ALIAS-090,"P.S.Y. Institute of Technology, Durgapur",Durgapur,SYN-INST-0045,VERIFIED,dotted initials + city,SYNTHETIC
+SYN-ALIAS-091,TVZ Coll. of Pharm.,Aurangabad,SYN-INST-0046,VERIFIED,abbreviation,SYNTHETIC
+SYN-ALIAS-092,tvz college of pharmacy,,SYN-INST-0046,VERIFIED,"lower case, no location",SYNTHETIC
+SYN-ALIAS-093,akm institute of technology,,SYN-INST-0047,VERIFIED,"lower case, no location",SYNTHETIC
+SYN-ALIAS-094,"A.K.M. Institute of Technology, Guntur",Guntur,SYN-INST-0047,VERIFIED,dotted initials + city,SYNTHETIC
+SYN-ALIAS-095,"B.L.Q. Institute of Management, Cuttack",Cuttack,SYN-INST-0048,VERIFIED,dotted initials + city,SYNTHETIC
+SYN-ALIAS-096,blq institute of management,,SYN-INST-0048,VERIFIED,"lower case, no location",SYNTHETIC
+SYN-ALIAS-097,cnr school of architecture,,SYN-INST-0049,VERIFIED,"lower case, no location",SYNTHETIC
+SYN-ALIAS-098,CNR School of Architecture,Belagavi,SYN-INST-0049,VERIFIED,abbreviation,SYNTHETIC
+SYN-ALIAS-099,"D.S.X. Engineering College, Lucknow",Lucknow,SYN-INST-0050,VERIFIED,dotted initials + city,SYNTHETIC
+SYN-ALIAS-100,dsx engineering college,,SYN-INST-0050,VERIFIED,"lower case, no location",SYNTHETIC
+SYN-ALIAS-101,fhm school of architecture,,SYN-INST-0051,VERIFIED,"lower case, no location",SYNTHETIC
+SYN-ALIAS-102,FHM School of Architecture,Guwahati,SYN-INST-0051,VERIFIED,abbreviation,SYNTHETIC
+SYN-ALIAS-103,gnu institute of technology,,SYN-INST-0052,VERIFIED,"lower case, no location",SYNTHETIC
+SYN-ALIAS-104,"G.N.U. Institute of Technology, Mysuru",Mysuru,SYN-INST-0052,VERIFIED,dotted initials + city,SYNTHETIC
+SYN-ALIAS-105,"H.P.W. Institute of Technology, Agra",Agra,SYN-INST-0053,VERIFIED,dotted initials + city,SYNTHETIC
+SYN-ALIAS-106,HPW Inst. of Tech.,Agra,SYN-INST-0053,VERIFIED,abbreviation,SYNTHETIC
+SYN-ALIAS-107,jmq school of architecture,,SYN-INST-0054,VERIFIED,"lower case, no location",SYNTHETIC
+SYN-ALIAS-108,"J.M.Q. School of Architecture, Indore",Indore,SYN-INST-0054,VERIFIED,dotted initials + city,SYNTHETIC
+SYN-ALIAS-109,abd polytechnic,,SYN-INST-0055,VERIFIED,"lower case, no location",SYNTHETIC
+SYN-ALIAS-110,"A.B.D. Polytechnic, Thrissur",Thrissur,SYN-INST-0055,VERIFIED,dotted initials + city,SYNTHETIC
+SYN-ALIAS-111,"L.M.O. Polytechnic, Jaipur",Jaipur,SYN-INST-0056,VERIFIED,dotted initials + city,SYNTHETIC
+SYN-ALIAS-112,lmo polytechnic,,SYN-INST-0056,VERIFIED,"lower case, no location",SYNTHETIC
+SYN-ALIAS-113,"P.Q.S. Polytechnic, Vadodara",Vadodara,SYN-INST-0057,VERIFIED,dotted initials + city,SYNTHETIC
+SYN-ALIAS-114,PQS Polytechnic,Vadodara,SYN-INST-0057,VERIFIED,abbreviation,SYNTHETIC
+SYN-ALIAS-115,uvx engineering college,,SYN-INST-0058,VERIFIED,"lower case, no location",SYNTHETIC
+SYN-ALIAS-116,"U.V.X. Engineering College, Coimbatore",Coimbatore,SYN-INST-0058,VERIFIED,dotted initials + city,SYNTHETIC
+SYN-ALIAS-117,NOR Polytechnic,Udaipur,SYN-INST-0059,VERIFIED,abbreviation,SYNTHETIC
+SYN-ALIAS-118,"N.O.R. Polytechnic, Udaipur",Udaipur,SYN-INST-0059,VERIFIED,dotted initials + city,SYNTHETIC
+SYN-ALIAS-119,qrt institute of management,,SYN-INST-0060,VERIFIED,"lower case, no location",SYNTHETIC
+SYN-ALIAS-120,"Q.R.T. Institute of Management, Pune",Pune,SYN-INST-0060,VERIFIED,dotted initials + city,SYNTHETIC
+SYN-ALIAS-121,"P.Q.R. Institute of Technology, Belagavi",Belagavi,SYN-INST-0061,VERIFIED,dotted initials + city,SYNTHETIC
+SYN-ALIAS-122,PQR Inst. of Tech.,Belagavi,SYN-INST-0061,VERIFIED,abbreviation,SYNTHETIC
+SYN-ALIAS-123,PQR Institute of Technology,,,VERIFICATION_QUEUE,two institutions share this name; no location -> must not auto-link,SYNTHETIC
+SYN-ALIAS-124,"PQR Inst. of Tech., Belagavi",Belagavi,SYN-INST-0061,VERIFIED,location disambiguates,SYNTHETIC
+SYN-ALIAS-125,PQR Institute of Technology Pune,Pune,SYN-INST-0016,VERIFIED,location disambiguates,SYNTHETIC
+SYN-ALIAS-126,ABX Engineering College,Pune,,VERIFICATION_QUEUE,one letter from ABC; similar but not exact -> human check,SYNTHETIC
+SYN-ALIAS-127,Abc Engg Colege,Pune,SYN-INST-0001,VERIFIED,"typo + abbreviation, same city",SYNTHETIC
+SYN-ALIAS-128,Sunrise Valley Institute of Science,Jaipur,,UNRESOLVED,not in master list,SYNTHETIC
+SYN-ALIAS-129,the college,,,UNRESOLVED,no identifying name,SYNTHETIC
+SYN-ALIAS-130,SYN-1-100037,,SYN-INST-0001,VERIFIED,exact permanent ID,SYNTHETIC

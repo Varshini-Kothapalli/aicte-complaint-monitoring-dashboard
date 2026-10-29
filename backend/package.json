@@ -1,0 +1,26 @@
+{
+  "name": "aicte-backend",
+  "version": "1.0.0",
+  "description": "Backend API for AICTE Integrated Institution Complaint Monitoring and Status Dashboard",
+  "main": "src/server.js",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node --watch src/server.js"
+  },
+  "dependencies": {
+    "aicte-complaint-monitoring-dashboard": "file:..",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "mongoose": "^8.9.5"
+  },
+  "keywords": [
+    "aicte",
+    "express",
+    "mongodb",
+    "rest-api"
+  ],
+  "author": "SIH 2026 Team",
+  "license": "UNLICENSED"
+}
