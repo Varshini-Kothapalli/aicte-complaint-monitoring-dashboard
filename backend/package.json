@@ -6,11 +6,15 @@
   "type": "commonjs",
   "scripts": {
     "start": "node src/server.js",
-    "dev": "node --watch src/server.js"
+    "dev": "node --watch src/server.js",
+    "seed": "node scripts/seed_database.js",
+    "seed:dry-run": "node scripts/seed_database.js --dry-run",
+    "test": "node --test --test-concurrency=1 tests/",
+    "test:unit": "node --test tests/unit/"
   },
   "dependencies": {
-    "aicte-complaint-monitoring-dashboard": "file:..",
     "cors": "^2.8.5",
+    "csv-parse": "^5.6.0",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
     "mongoose": "^8.9.5"

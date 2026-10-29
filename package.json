@@ -13,7 +13,11 @@
     "dev:backend": "npm --prefix backend run dev",
     "dev:frontend": "npm --prefix frontend run dev",
     "install:all": "npm install && npm --prefix backend install && npm --prefix frontend install",
-    "test:health": "node -e \"fetch('http://localhost:5000/api/v1/health').then(r=>r.json()).then(console.log).catch(console.error)\""
+    "test:health": "node -e \"fetch('http://localhost:5000/api/v1/health').then(r=>r.json()).then(console.log).catch(console.error)\"",
+    "seed": "npm --prefix backend run seed",
+    "seed:dry-run": "npm --prefix backend run seed:dry-run",
+    "test:backend": "npm --prefix backend test",
+    "build:frontend": "npm --prefix frontend run build"
   },
   "keywords": [
     "aicte",
