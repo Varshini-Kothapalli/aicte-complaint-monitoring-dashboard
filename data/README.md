@@ -21,7 +21,7 @@ data/
 │       │   ├── users.csv                   # 27 synthetic user accounts across 5 administrative roles
 │       │   ├── category_matrix.csv         # 13 related category pairs with rule points (+0.25)
 │       │   ├── cases.csv                   # 809 synthetic cases across 5 lifecycle states (162 overdue)
-│       │   ├── case_actions.csv            # 4,099 chronological action events (audit trail)
+│       │   ├── case_actions.csv            # 4,099 rows (5 exact duplicates) -> 4,094 stored action events
 │       │   ├── transfers.csv               # 25 inter-Bureau case transfer events
 │       │   └── overlap_ground_truth.csv    # 214 labelled case pairs for Engine D2 evaluation
 │       └── scripts/

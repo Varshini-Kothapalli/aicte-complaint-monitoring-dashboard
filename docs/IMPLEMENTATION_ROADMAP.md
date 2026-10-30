@@ -2,7 +2,7 @@
 ## Multi-Phase Implementation Roadmap
 
 > **Target Hackathon:** Smart India Hackathon (SIH) 2026  
-> **Current Progress:** Phase 1 Completed &bull; Ready for Phase 2 Handoff to Claude Pro  
+> **Current Progress:** Phases 1–2 Completed &bull; Phase 3 partially started (read APIs + Cases Explorer live)  
 
 ---
 
@@ -12,10 +12,10 @@
 [Phase 1: Foundation Scaffolding] ─── COMPLETED
         │
         ▼
-[Phase 2: Database Schema & Ingestion] ◄── NEXT TASK (Claude Pro)
+[Phase 2: Database Schema & Ingestion] ─── COMPLETED
         │
         ▼
-[Phase 3: Core Complaint Management & Transfers]
+[Phase 3: Core Complaint Management & Transfers] ◄── NEXT (read side done)
         │
         ▼
 [Phase 4: Engine D1 - Identity Resolution]
@@ -41,7 +41,7 @@
 
 ---
 
-### Phase 2: Database Modeling & Synthetic Data Seeding [NEXT TASK]
+### Phase 2: Database Modeling & Synthetic Data Seeding [COMPLETED — see docs/DATA_IMPORT.md]
 **Assignee:** Claude Pro  
 **Objective:** Establish live MongoDB collections and execute a repeatable seeding pipeline from `data/processed/extracted/csv/`.
 
@@ -50,17 +50,17 @@
 2. **Seed Script (`backend/scripts/seed_database.js`):**
    - Read CSV files from `data/processed/extracted/csv/`.
    - **Patch Known Bug:** Change row 17 in `users.csv` from `SYN-USR-REG-NORTHE` to `SYN-USR-REG-NE` with email `reg-ne@demo.invalid` to prevent index collision with row 19.
-   - Insert records: 61 institutions, 130 aliases, 3 bureaus, 27 users, 13 category rules, 809 cases, 4,099 actions, 25 transfers, 214 ground truth pairs.
+   - Insert records: 61 institutions, 130 aliases, 3 bureaus, 27 users, 13 category rules, 809 cases, 4,094 actions (4,099 rows incl. 5 exact duplicates), 25 transfers, 214 ground truth pairs. ✅ Verified 2026-10-29.
 3. **Verification Command:** Add npm script `"seed": "node scripts/seed_database.js"` and confirm record counts match `docs/DATASET_ASSESSMENT.md`.
 
 ---
 
 ### Phase 3: Core Complaint Management & State Machine
-- [ ] Implement REST endpoints for `/api/v1/cases` (pagination, filtering, full-text search).
+- [x] Implement read endpoints for `/api/v1/cases` and `/api/v1/institutions` (pagination, filtering, search).
 - [ ] Implement case lifecycle transitions: `Received` &rarr; `Assigned` &rarr; `Under Process` &rarr; `Action Initiated` &rarr; `Disposed`.
 - [ ] Implement append-only audit logging in `case_actions` on every state transition.
 - [ ] Implement two-stage inter-Bureau transfer workflow (`/api/v1/transfers/request` and `/accept`).
-- [ ] Connect Frontend `CasesExplorerPage` to live backend API.
+- [x] Connect Frontend `CasesExplorerPage` and `InstitutionsPage` to live backend API (+ case and institution detail pages).
 
 ---
 

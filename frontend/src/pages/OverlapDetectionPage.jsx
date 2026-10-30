@@ -1,159 +1,179 @@
-import React from 'react';
-import ProvenanceTag from '../components/ProvenanceTag';
+import React, { useState } from 'react';
+import { Link, useSearchParams } from 'react-router-dom';
 import Badge from '../components/Badge';
-import { GitCompare, Check, X, Link as LinkIcon, AlertCircle } from 'lucide-react';
+import Pagination from '../components/Pagination';
+import DuplicateDecisionDialog from '../components/DuplicateDecisionDialog';
+import { LoadingState, ErrorState, EmptyState } from '../components/DataState';
+import useApiResource from '../hooks/useApiResource';
+import { fetchDuplicates } from '../services/api';
+import { displayCaseId, displayInstitutionId, formatDate, readableText } from '../utils/format';
+import { REVIEW_STATUS, MATCH_STRENGTH, pairPath } from '../utils/duplicates';
+import { Check, X, Columns2 } from 'lucide-react';
 
-const SAMPLE_PAIRS = [
-  {
-    pair_id: 'SYN-PAIR-001',
-    case_a: 'SYN-PGRC-2026-0001',
-    case_b: 'SYN-RB-2026-0002',
-    institution: 'ABC Engineering College (SYN-INST-0001)',
-    bureau_a: 'PGRC',
-    bureau_b: 'RB',
-    category_a: 'fee_refund',
-    category_b: 'fee_regulation_compliance',
-    relation: 'same_matter',
-    shares_ref: false,
-    band: 'HIGH',
-    score: 0.82,
-    alert: true,
-    reason: 'Same fee-refund matter seen by PGRC and RB with divergent wording',
-  },
-  {
-    pair_id: 'SYN-PAIR-004',
-    case_a: 'SYN-AB-2026-0004',
-    case_b: 'SYN-RB-2026-0005',
-    institution: 'BCD Institute of Management (SYN-INST-0002)',
-    bureau_a: 'AB',
-    bureau_b: 'RB',
-    category_a: 'approval_deficiency',
-    category_b: 'fake_faculty',
-    relation: 'same_matter',
-    shares_ref: true,
-    band: 'HIGH',
-    score: 0.94,
-    alert: true,
-    reason: 'Shared reference letter SYN/LTR/2026/168 + related faculty categories',
-  },
-  {
-    pair_id: 'SYN-PAIR-002',
-    case_a: 'SYN-PGRC-2026-0001',
-    case_b: 'SYN-AB-2026-0003',
-    institution: 'ABC Engineering College (SYN-INST-0001)',
-    bureau_a: 'PGRC',
-    bureau_b: 'AB',
-    category_a: 'fee_refund',
-    category_b: 'approval_deficiency',
-    relation: 'different_matter',
-    shares_ref: false,
-    band: 'NONE',
-    score: 0.14,
-    alert: false,
-    reason: 'Same institution but unrelated issues (fee refund vs lab facilities)',
-  },
-];
+function ComplaintCell({ c }) {
+  if (!c) return '—';
+  return (
+    <>
+      <Link className="table-link cell-code" to={`/cases/${c.case_id}`}>{displayCaseId(c.case_id)}</Link>
+      <div><Badge status={c.bureau}>{c.bureau}</Badge> <Badge status={c.status} /></div>
+      <div className="row-muted">{c.subject}</div>
+    </>
+  );
+}
 
 export default function OverlapDetectionPage() {
+  const [params, setParams] = useSearchParams();
+  const get = (k, def = '') => params.get(k) ?? def;
+  const [dialog, setDialog] = useState(null);
+  const query = { page: get('page', '1'), limit: get('limit', '20'), status: get('status', 'pending') === 'all' ? '' : get('status', 'pending'), band: get('band'), institution_id: get('institution_id') };
+  const { data, meta, loading, error, details, reload } = useApiResource((opts) => fetchDuplicates(query, opts), [JSON.stringify(query)]);
+
+  function update(changes, { resetPage = true } = {}) {
+    const next = new URLSearchParams(params);
+    Object.entries(changes).forEach(([k, v]) => (v === '' || v == null ? next.delete(k) : next.set(k, String(v))));
+    if (resetPage && !('page' in changes)) next.delete('page');
+    setParams(next);
+  }
+
+  const s = meta?.summary;
   return (
     <div>
       <div className="page-header">
         <div className="page-title-group">
-          <h2>Cross-Bureau Overlap Detection & Coordination</h2>
-          <p>Engine D2: Advisory overlap alerts, explainable match scoring, and official review actions</p>
+          <h2>Possible Duplicate Complaints</h2>
+          <p>Complaints about the same institution, handled by different Bureaus, that may concern the same matter</p>
         </div>
-        <ProvenanceTag type="SYNTHETIC" />
       </div>
 
-      {/* Advisory Notice */}
-      <div className="content-card" style={{ borderLeft: '4px solid #D97706' }}>
+      <div className="content-card" style={{ borderLeft: '4px solid var(--accent-gold)' }}>
         <div className="card-body">
-          <h4 style={{ fontSize: '0.9375rem', fontWeight: 700, marginBottom: '0.5rem', color: '#B45309' }}>
-            System Guardrail: AI is Strictly Advisory
-          </h4>
+          <h4 style={{ fontSize: '0.9375rem', fontWeight: 700, marginBottom: '0.375rem' }}>How suggestions are made</h4>
           <p style={{ fontSize: '0.8125rem', color: 'var(--text-muted)', lineHeight: '1.5' }}>
-            Engine D2 calculates hybrid similarity scores combining <strong>dense semantic embeddings (all-MiniLM-L6-v2)</strong>, 
-            <strong>category-pair rules</strong>, and <strong>shared reference numbers</strong>. Overlap detections 
-            <strong> never automatically merge, transfer, or halt any regulatory action</strong>. Every coordination decision is audited with official ID and timestamp.
+            The system compares open complaints about the same institution that are with different Bureaus. It looks for a shared
+            reference number, related complaint types, the same complainant, complaints received close together, and similar wording.
+            The similarity score (0 to 1) summarises these checks, and the reasons are listed for every pair.{' '}
+            <strong>A suggestion never merges, closes or transfers a complaint.</strong> Only an official's decision is recorded,
+            and every decision is saved with the official's name, the time and the reason.
           </p>
         </div>
       </div>
 
-      {/* Candidate Overlaps Table */}
       <div className="content-card">
-        <div className="card-header">
-          <span className="card-title">Potential Overlapping Cases (214 Ground Truth Benchmark Pairs)</span>
-          <span className="status-badge medium-band">87 Cross-Bureau Alerts Configured</span>
+        <div className="filter-bar">
+          <select className="filter-select" value={get('status', 'pending')} onChange={(e) => update({ status: e.target.value })} aria-label="Review status">
+            <option value="pending">Awaiting review{s ? ` (${s.pending})` : ''}</option>
+            <option value="confirmed_linked">Confirmed related{s ? ` (${s.confirmed_linked})` : ''}</option>
+            <option value="dismissed_unrelated">Marked unrelated{s ? ` (${s.dismissed_unrelated})` : ''}</option>
+            <option value="all">All</option>
+          </select>
+          <select className="filter-select" value={get('band')} onChange={(e) => update({ band: e.target.value })} aria-label="Match strength">
+            <option value="">Any match strength</option>
+            <option value="HIGH">Strong match</option>
+            <option value="MEDIUM">Possible match</option>
+          </select>
+          {get('institution_id') && (
+            <button type="button" className="btn btn-outline" onClick={() => update({ institution_id: '' })}>
+              <X size={14} /> Institution {displayInstitutionId(get('institution_id'))}
+            </button>
+          )}
         </div>
 
-        <div className="table-wrapper">
-          <table className="data-table">
-            <thead>
-              <tr>
-                <th>Pair ID</th>
-                <th>Institution</th>
-                <th>Case A</th>
-                <th>Case B</th>
-                <th>Match Band</th>
-                <th>Match Rationale</th>
-                <th>Official Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {SAMPLE_PAIRS.map(p => (
-                <tr key={p.pair_id} style={p.alert ? { backgroundColor: '#FFFDF5' } : {}}>
-                  <td className="cell-code">{p.pair_id}</td>
-                  <td><strong>{p.institution}</strong></td>
-                  <td>
-                    <div className="cell-code">{p.case_a}</div>
-                    <div style={{ fontSize: '0.6875rem', color: 'var(--text-muted)' }}>
-                      <Badge status={p.bureau_a}>{p.bureau_a}</Badge> {p.category_a}
-                    </div>
-                  </td>
-                  <td>
-                    <div className="cell-code">{p.case_b}</div>
-                    <div style={{ fontSize: '0.6875rem', color: 'var(--text-muted)' }}>
-                      <Badge status={p.bureau_b}>{p.bureau_b}</Badge> {p.category_b}
-                    </div>
-                  </td>
-                  <td>
-                    {p.band === 'HIGH' && <span className="status-badge high-band">HIGH ({p.score})</span>}
-                    {p.band === 'MEDIUM' && <span className="status-badge medium-band">MEDIUM ({p.score})</span>}
-                    {p.band === 'NONE' && <span className="status-badge" style={{ backgroundColor: '#F1F5F9', color: '#64748B' }}>NONE ({p.score})</span>}
-                    {p.alert && (
-                      <div style={{ fontSize: '0.6875rem', color: '#B45309', fontWeight: 700, marginTop: '2px' }}>
-                        Alert Active
-                      </div>
-                    )}
-                  </td>
-                  <td style={{ fontSize: '0.8125rem', maxWidth: '280px' }}>
-                    {p.reason}
-                    {p.shares_ref && (
-                      <div style={{ fontSize: '0.6875rem', color: '#059669', fontWeight: 600, marginTop: '2px' }}>
-                        &bull; Shares Reference ID
-                      </div>
-                    )}
-                  </td>
-                  <td>
-                    {p.alert ? (
-                      <div style={{ display: 'flex', gap: '0.25rem' }}>
-                        <button className="btn btn-primary" style={{ padding: '0.25rem 0.5rem', fontSize: '0.75rem' }} title="Confirm & Link">
-                          <Check size={12} /> Link
-                        </button>
-                        <button className="btn btn-outline" style={{ padding: '0.25rem 0.5rem', fontSize: '0.75rem' }} title="Dismiss Alert">
-                          <X size={12} /> Dismiss
-                        </button>
-                      </div>
-                    ) : (
-                      <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>No action required</span>
-                    )}
-                  </td>
+        {loading && <LoadingState label="Loading possible duplicates…" />}
+        {!loading && error && <ErrorState message={error} details={details} onRetry={reload} />}
+        {!loading && !error && meta && !meta.scanned && (
+          <EmptyState
+            title="Duplicate review has not been run yet"
+            message="An administrator runs the duplicate check after loading data (npm run duplicates:scan). Suggestions will appear here."
+          />
+        )}
+        {!loading && !error && meta?.scanned && data.length === 0 && (
+          <EmptyState title="Nothing to show" message="No complaint pairs match these filters." />
+        )}
+
+        {!loading && !error && data?.length > 0 && (
+          <div className="table-wrapper">
+            <table className="data-table">
+              <thead>
+                <tr>
+                  <th>Complaint A</th>
+                  <th>Complaint B</th>
+                  <th>Institution</th>
+                  <th>Similarity Score</th>
+                  <th>Reason for Match</th>
+                  <th>Review Status</th>
+                  <th>Actions</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+              </thead>
+              <tbody>
+                {data.map((p) => {
+                  const st = REVIEW_STATUS[p.official_decision];
+                  const strength = MATCH_STRENGTH[p.band];
+                  return (
+                    <tr key={p.pair_key}>
+                      <td><ComplaintCell c={p.complaint_a} /></td>
+                      <td><ComplaintCell c={p.complaint_b} /></td>
+                      <td>
+                        {p.institution ? <Link className="table-link" to={`/institutions/${p.institution_id}`}>{p.institution.name}</Link> : '—'}
+                        {p.institution && <div className="row-muted">{p.institution.district}</div>}
+                      </td>
+                      <td>
+                        <span className="match-strength">
+                          <strong>{p.score.toFixed(2)}</strong>
+                          {strength && <span className={`status-badge ${strength.cls}`}>{strength.label}</span>}
+                        </span>
+                      </td>
+                      <td style={{ minWidth: 240, maxWidth: 340 }}>
+                        <ul className="reason-list">{p.reasons.map((r) => <li key={r}>{readableText(r)}</li>)}</ul>
+                      </td>
+                      <td>
+                        <span className={`status-badge ${st.cls}`}>{st.label}</span>
+                        {p.decided_by_display && (
+                          <div className="row-muted">{p.decided_by_display.name}, {formatDate(p.decided_at)}</div>
+                        )}
+                      </td>
+                      <td>
+                        <div className="action-group">
+                          {p.official_decision === 'pending' && (
+                            <>
+                              <button type="button" className="btn btn-primary btn-sm" onClick={() => setDialog({ pair: p, decision: 'confirmed_linked' })}>
+                                <Check size={12} /> Confirm Related
+                              </button>
+                              <button type="button" className="btn btn-outline btn-sm" onClick={() => setDialog({ pair: p, decision: 'dismissed_unrelated' })}>
+                                <X size={12} /> Mark as Unrelated
+                              </button>
+                            </>
+                          )}
+                          <Link className="btn btn-outline btn-sm" to={pairPath(p.pair_key)}>
+                            <Columns2 size={12} /> View Both
+                          </Link>
+                        </div>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        )}
+
+        {!error && meta?.scanned && (
+          <Pagination
+            meta={meta}
+            noun="pairs"
+            onPageChange={(pg) => update({ page: pg }, { resetPage: false })}
+            onLimitChange={(l) => update({ limit: l })}
+          />
+        )}
       </div>
+
+      {dialog && (
+        <DuplicateDecisionDialog
+          pair={dialog.pair}
+          decision={dialog.decision}
+          onClose={() => setDialog(null)}
+          onDone={() => { setDialog(null); reload(); }}
+        />
+      )}
     </div>
   );
 }

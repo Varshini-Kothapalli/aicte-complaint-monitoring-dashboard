@@ -134,6 +134,15 @@ Read `docs/DATASET_ASSESSMENT.md` thoroughly before modifying data. Key takeaway
 
 ---
 
+## 4a. Phase 2 Status (completed 2026-10-29)
+
+Implemented: Mongoose models, idempotent importer + `npm run seed`, read APIs for cases and institutions,
+live Cases Explorer / Institutions / case detail / institution detail pages, 52 backend tests (node:test,
+real MongoDB). See `docs/DATA_IMPORT.md`. Verified counts: 4,094 case actions are stored from 4,099 CSV
+rows (5 exact duplicate rows collapsed). The users.csv collision below is resolved at import time by
+documented transformation T1 (the source file is unchanged). The rows are data rows 18 and 20
+(the "17 / 19" below are zero-based indices).
+
 ## 5. Known Issues & Anomalies to Address
 
 ### 1. `users.csv` Duplicate User ID Collision (CRITICAL)

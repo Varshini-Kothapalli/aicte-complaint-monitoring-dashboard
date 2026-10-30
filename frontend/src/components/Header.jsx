@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { Search, Bell, ShieldCheck, Database, Server } from 'lucide-react';
+import { Search, ShieldCheck, Server } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import { fetchHealth } from '../services/api';
 
 export default function Header({ currentBureau = 'ALL', onBureauChange }) {
+  const navigate = useNavigate();
+  const [search, setSearch] = useState('');
   const [healthStatus, setHealthStatus] = useState({
     checked: false,
     online: false,
@@ -45,22 +48,31 @@ export default function Header({ currentBureau = 'ALL', onBureauChange }) {
       <div className="header-left">
         <div className="header-bureau-pill">
           <ShieldCheck size={16} />
-          <span>Scope:</span>
-          <strong>{currentBureau === 'ALL' ? 'Integrated (All Bureaus)' : currentBureau}</strong>
+          <span>Viewing:</span>
+          <strong>{currentBureau === 'ALL' ? 'All Bureaus' : currentBureau}</strong>
         </div>
 
-        <div className="header-search">
+        <form
+          className="header-search"
+          role="search"
+          onSubmit={(e) => {
+            e.preventDefault();
+            const q = search.trim();
+            if (q) navigate(`/cases?q=${encodeURIComponent(q)}`);
+          }}
+        >
           <Search size={16} />
-          <input 
-            type="text" 
-            placeholder="Search cases, AICTE IDs, or institutions..." 
-            aria-label="Search"
+          <input
+            type="search"
+            placeholder="Search complaints by number, institution or keyword…"
+            aria-label="Search complaints"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
           />
-        </div>
+        </form>
       </div>
 
       <div className="header-right">
-        {/* Backend & DB Health Indicator */}
         <div 
           className="system-status-indicator"
           title={
@@ -72,17 +84,16 @@ export default function Header({ currentBureau = 'ALL', onBureauChange }) {
           <div className={`status-dot ${healthStatus.online ? (healthStatus.dbConnected ? '' : 'degraded') : 'error'}`} />
           <span>
             {healthStatus.online 
-              ? (healthStatus.dbConnected ? 'System Online' : 'DB Degraded')
+              ? (healthStatus.dbConnected ? 'System Online' : 'Database unavailable')
               : 'API Offline'}
           </span>
         </div>
 
-        {/* User Profile Pill */}
         <div className="user-profile-widget">
           <div className="user-avatar">AD</div>
           <div className="user-info">
-            <div className="user-name">SysAdmin 01</div>
-            <div className="user-role">Administrator</div>
+            <div className="user-name">Demo user</div>
+            <div className="user-role">Login not yet enabled</div>
           </div>
         </div>
       </div>

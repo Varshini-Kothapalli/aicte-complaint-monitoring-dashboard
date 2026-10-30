@@ -1,185 +1,216 @@
-import React, { useState } from 'react';
-import ProvenanceTag from '../components/ProvenanceTag';
+import React, { useEffect, useState } from 'react';
+import { Link, useOutletContext, useSearchParams } from 'react-router-dom';
 import Badge from '../components/Badge';
-import { Search, Filter, RefreshCw, Eye } from 'lucide-react';
+import Pagination from '../components/Pagination';
+import { LoadingState, ErrorState, EmptyState } from '../components/DataState';
+import useApiResource from '../hooks/useApiResource';
+import { fetchCases } from '../services/api';
+import {
+  BUREAUS, STATUSES, REGIONS, CATEGORIES, formatDate, humanize, statusLabel, displayCaseId, displayInstitutionId,
+} from '../utils/format';
+import { RefreshCw, Eye, X, SlidersHorizontal } from 'lucide-react';
 
-const SAMPLE_CASES = [
-  {
-    case_id: 'SYN-PGRC-2026-0001',
-    institution: 'ABC Engineering College (Pune)',
-    category: 'fee_refund',
-    bureau: 'PGRC',
-    officer: 'SYN-USR-PGRC-01',
-    status: 'Under Process',
-    receipt_date: '2026-09-20',
-    expected_disposal: '2026-10-20',
-    is_overdue: true,
-    subject: 'Fee refund not given after withdrawal',
-  },
-  {
-    case_id: 'SYN-RB-2026-0002',
-    institution: 'ABC Engineering College (Pune)',
-    category: 'fee_regulation_compliance',
-    bureau: 'RB',
-    officer: 'SYN-USR-RB-02',
-    status: 'Action Initiated',
-    receipt_date: '2026-10-07',
-    expected_disposal: '2026-12-06',
-    is_overdue: false,
-    subject: 'Refund practice compliance check',
-  },
-  {
-    case_id: 'SYN-AB-2026-0003',
-    institution: 'ABC Engineering College (Pune)',
-    category: 'approval_deficiency',
-    bureau: 'AB',
-    officer: 'SYN-USR-AB-02',
-    status: 'Under Process',
-    receipt_date: '2026-09-25',
-    expected_disposal: '2026-10-25',
-    is_overdue: true,
-    subject: 'Laboratory deficiency',
-  },
-  {
-    case_id: 'SYN-PGRC-2026-0018',
-    institution: 'PQR Institute of Technology (Pune)',
-    category: 'salary_non_payment',
-    bureau: 'PGRC',
-    officer: 'SYN-USR-PGRC-03',
-    status: 'Action Initiated',
-    receipt_date: '2026-08-25',
-    expected_disposal: '2026-09-24',
-    is_overdue: true,
-    subject: 'Pending salary dues for faculty',
-  },
-  {
-    case_id: 'SYN-RB-2026-0022',
-    institution: 'CDE College of Pharmacy (Mysuru)',
-    category: 'faculty_norms_compliance',
-    bureau: 'RB',
-    officer: 'SYN-USR-RB-01',
-    status: 'Disposed',
-    receipt_date: '2026-06-14',
-    expected_disposal: '2026-08-13',
-    is_overdue: false,
-    subject: 'Faculty pay scale verification completed',
-  },
-];
+const FILTER_KEYS = ['bureau', 'status', 'region', 'category', 'is_overdue', 'from', 'to', 'q', 'institution_id'];
+const MORE_KEYS = ['region', 'category', 'from', 'to'];
 
 export default function CasesExplorerPage() {
-  const [bureauFilter, setBureauFilter] = useState('ALL');
-  const [statusFilter, setStatusFilter] = useState('ALL');
-  const [searchTerm, setSearchTerm] = useState('');
+  const { currentBureau } = useOutletContext() || {};
+  const [params, setParams] = useSearchParams();
+  const get = (k, def = '') => params.get(k) ?? def;
+  const [showMore, setShowMore] = useState(MORE_KEYS.some((k) => params.get(k)));
 
-  const filteredCases = SAMPLE_CASES.filter(c => {
-    if (bureauFilter !== 'ALL' && c.bureau !== bureauFilter) return false;
-    if (statusFilter !== 'ALL' && c.status !== statusFilter) return false;
-    if (searchTerm && !c.case_id.toLowerCase().includes(searchTerm.toLowerCase()) && 
-        !c.institution.toLowerCase().includes(searchTerm.toLowerCase()) &&
-        !c.subject.toLowerCase().includes(searchTerm.toLowerCase())) {
-      return false;
-    }
-    return true;
-  });
+  // Search box is debounced so typing does not fire a request per keystroke.
+  const [searchInput, setSearchInput] = useState(get('q'));
+  useEffect(() => setSearchInput(get('q')), [params]);
+  useEffect(() => {
+    const t = setTimeout(() => {
+      if (searchInput.trim() !== get('q')) update({ q: searchInput.trim() });
+    }, 350);
+    return () => clearTimeout(t);
+  }, [searchInput]);
+
+  function update(changes, { resetPage = true } = {}) {
+    const next = new URLSearchParams(params);
+    Object.entries(changes).forEach(([k, v]) => (v === '' || v === 'ALL' || v == null ? next.delete(k) : next.set(k, String(v))));
+    if (resetPage && !('page' in changes)) next.delete('page');
+    setParams(next);
+  }
+
+  // The header's Bureau selection applies when no Bureau filter is chosen here.
+  const bureau = get('bureau') || (currentBureau && currentBureau !== 'ALL' ? currentBureau : '');
+  const query = {
+    page: get('page', '1'),
+    limit: get('limit', '20'),
+    bureau,
+    status: get('status'),
+    region: get('region'),
+    category: get('category'),
+    is_overdue: get('is_overdue'),
+    from: get('from'),
+    to: get('to'),
+    q: get('q'),
+    institution_id: get('institution_id'),
+  };
+  const { data, meta, loading, error, details, reload } = useApiResource((opts) => fetchCases(query, opts), [JSON.stringify(query)]);
+  const activeFilters = FILTER_KEYS.filter((k) => get(k));
+  const statusValue = get('status', 'ALL');
+  const isKnownStatus = statusValue === 'ALL' || STATUSES.includes(statusValue);
 
   return (
     <div>
       <div className="page-header">
         <div className="page-title-group">
-          <h2>All Cases Explorer</h2>
-          <p>Search, filter, and inspect institutional complaints across all Bureaus</p>
+          <h2>All Complaints</h2>
+          <p>Search and track complaints across all Bureaus</p>
         </div>
-        <ProvenanceTag type="SYNTHETIC" />
       </div>
 
       <div className="content-card">
-        {/* Filters */}
         <div className="filter-bar">
-          <select 
-            className="filter-select"
-            value={bureauFilter}
-            onChange={(e) => setBureauFilter(e.target.value)}
-          >
-            <option value="ALL">All Bureaus (PGRC, RB, AB)</option>
-            <option value="PGRC">Public Grievance Redressal Cell (PGRC)</option>
-            <option value="RB">Regulation Bureau (RB)</option>
-            <option value="AB">Approval Bureau (AB)</option>
-          </select>
-
-          <select 
-            className="filter-select"
-            value={statusFilter}
-            onChange={(e) => setStatusFilter(e.target.value)}
-          >
-            <option value="ALL">All Statuses</option>
-            <option value="Received">Received</option>
-            <option value="Assigned">Assigned</option>
-            <option value="Under Process">Under Process</option>
-            <option value="Action Initiated">Action Initiated</option>
-            <option value="Disposed">Disposed</option>
-          </select>
-
-          <input 
-            type="text" 
-            placeholder="Search by case ID or keyword..."
+          <input
+            type="search"
+            placeholder="Search by case ID, institution or keyword"
             className="filter-select"
             style={{ width: '280px' }}
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
+            value={searchInput}
+            onChange={(e) => setSearchInput(e.target.value)}
+            aria-label="Search complaints"
           />
 
-          <button className="btn btn-outline" style={{ marginLeft: 'auto' }}>
+          <select className="filter-select" value={bureau || 'ALL'} onChange={(e) => update({ bureau: e.target.value })} aria-label="Bureau">
+            <option value="ALL">All Bureaus</option>
+            {BUREAUS.map((b) => <option key={b.code} value={b.code}>{b.code} – {b.name}</option>)}
+          </select>
+
+          <select className="filter-select" value={isKnownStatus ? statusValue : 'GROUP'} onChange={(e) => update({ status: e.target.value })} aria-label="Status">
+            <option value="ALL">All statuses</option>
+            {!isKnownStatus && <option value="GROUP" disabled>{statusValue.split(',').map(statusLabel).join(' or ')}</option>}
+            {STATUSES.map((s) => <option key={s} value={s}>{statusLabel(s)}</option>)}
+          </select>
+
+          <select className="filter-select" value={get('is_overdue', 'ALL')} onChange={(e) => update({ is_overdue: e.target.value })} aria-label="Overdue">
+            <option value="ALL">Overdue and on time</option>
+            <option value="true">Overdue only</option>
+            <option value="false">On time only</option>
+          </select>
+
+          <button type="button" className="btn btn-outline" aria-expanded={showMore} onClick={() => setShowMore((v) => !v)}>
+            <SlidersHorizontal size={14} /> More filters
+          </button>
+
+          {showMore && (
+            <div className="more-filters">
+              <select className="filter-select" value={get('region', 'ALL')} onChange={(e) => update({ region: e.target.value })} aria-label="Region">
+                <option value="ALL">All regions</option>
+                {REGIONS.map((r) => <option key={r} value={r}>{r}</option>)}
+              </select>
+              <select className="filter-select" value={get('category', 'ALL')} onChange={(e) => update({ category: e.target.value })} aria-label="Complaint type">
+                <option value="ALL">All complaint types</option>
+                {CATEGORIES.map((c) => <option key={c} value={c}>{humanize(c)}</option>)}
+              </select>
+              <label className="filter-label">
+                Received from
+                <input type="date" className="filter-select" value={get('from')} onChange={(e) => update({ from: e.target.value })} />
+              </label>
+              <label className="filter-label">
+                to
+                <input type="date" className="filter-select" value={get('to')} onChange={(e) => update({ to: e.target.value })} />
+              </label>
+            </div>
+          )}
+
+          {activeFilters.length > 0 && (
+            <button type="button" className="btn btn-outline" onClick={() => { setSearchInput(''); setParams(new URLSearchParams()); }}>
+              <X size={14} /> Clear
+            </button>
+          )}
+          <button type="button" className="btn btn-outline" style={{ marginLeft: 'auto' }} onClick={reload} disabled={loading}>
             <RefreshCw size={14} /> Refresh
           </button>
         </div>
 
-        {/* Table */}
-        <div className="table-wrapper">
-          <table className="data-table">
-            <thead>
-              <tr>
-                <th>Case ID</th>
-                <th>Institution</th>
-                <th>Bureau</th>
-                <th>Subject</th>
-                <th>Status</th>
-                <th>Expected Disposal</th>
-                <th>Assigned Officer</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filteredCases.map(c => (
-                <tr key={c.case_id}>
-                  <td className="cell-code">{c.case_id}</td>
-                  <td><strong>{c.institution}</strong></td>
-                  <td><Badge status={c.bureau}>{c.bureau}</Badge></td>
-                  <td>{c.subject}</td>
-                  <td>
-                    <Badge status={c.status} />
-                    {c.is_overdue && (
-                      <span style={{ marginLeft: '0.25rem' }}>
-                        <Badge status="overdue">Overdue</Badge>
-                      </span>
-                    )}
-                  </td>
-                  <td>{c.expected_disposal}</td>
-                  <td className="cell-code" style={{ fontSize: '0.75rem' }}>{c.officer}</td>
-                  <td>
-                    <button className="btn btn-outline" style={{ padding: '0.25rem 0.5rem', fontSize: '0.75rem' }}>
-                      <Eye size={12} /> View
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+        {get('institution_id') && (
+          <div className="row-muted" style={{ padding: '0.5rem 1.25rem' }}>
+            Showing complaints for institution {displayInstitutionId(get('institution_id'))}
+          </div>
+        )}
 
-        <div style={{ padding: '0.75rem 1.25rem', fontSize: '0.75rem', color: 'var(--text-muted)', borderTop: '1px solid var(--border-color)', display: 'flex', justifyContent: 'space-between' }}>
-          <span>Showing sample records from synthetic prototype dataset (809 total cases available in `data/processed/extracted/csv/cases.csv`).</span>
-          <span>Pagination and live MongoDB queries to be wired by Claude Pro.</span>
-        </div>
+        {loading && <LoadingState label="Loading complaints…" />}
+        {!loading && error && <ErrorState message={error} details={details} onRetry={reload} />}
+        {!loading && !error && data?.length === 0 && (
+          <EmptyState title="No complaints match" message="Try removing a filter or searching for something else." />
+        )}
+
+        {!loading && !error && data?.length > 0 && (
+          <div className="table-wrapper">
+            <table className="data-table">
+              <thead>
+                <tr>
+                  <th>Case ID</th>
+                  <th>Institution</th>
+                  <th>Complaint Subject</th>
+                  <th>Bureau</th>
+                  <th>Status</th>
+                  <th>Assigned Officer</th>
+                  <th>Target Resolution Date</th>
+                  <th><span className="sr-only">Action</span></th>
+                </tr>
+              </thead>
+              <tbody>
+                {data.map((c) => (
+                  <tr key={c.case_id}>
+                    <td className="cell-code">{displayCaseId(c.case_id)}</td>
+                    <td>
+                      {c.institution ? (
+                        <>
+                          <Link className="table-link" to={`/institutions/${c.institution.institution_id}`}>{c.institution.name}</Link>
+                          <div className="row-muted">{c.institution.district}, {c.institution.state}</div>
+                        </>
+                      ) : (
+                        <>
+                          <strong>{c.raw_institution_name || 'Institution not identified'}</strong>
+                          <div className="warn-text">Institution not yet verified</div>
+                        </>
+                      )}
+                    </td>
+                    <td>
+                      {c.subject}
+                      {humanize(c.category).toLowerCase() !== c.subject.toLowerCase() && <div className="row-muted">{humanize(c.category)}</div>}
+                    </td>
+                    <td><Badge status={c.bureau}>{c.bureau}</Badge></td>
+                    <td>
+                      <Badge status={c.status} />
+                      {c.is_overdue && <div style={{ marginTop: '0.25rem' }}><Badge status="overdue">Overdue</Badge></div>}
+                    </td>
+                    <td>
+                      {c.assigned_officer_display ? (
+                        <>
+                          {c.assigned_officer_display.name}
+                          {c.assigned_officer_display.designation && <div className="row-muted">{c.assigned_officer_display.designation}</div>}
+                        </>
+                      ) : <span className="row-muted">Not yet assigned</span>}
+                    </td>
+                    <td>{formatDate(c.expected_disposal_date)}</td>
+                    <td>
+                      <Link className="btn btn-outline btn-sm" to={`/cases/${c.case_id}`} aria-label={`View ${displayCaseId(c.case_id)}`}>
+                        <Eye size={12} /> View
+                      </Link>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+
+        {!error && meta && (
+          <Pagination
+            meta={meta}
+            noun="complaints"
+            onPageChange={(p) => update({ page: p }, { resetPage: false })}
+            onLimitChange={(l) => update({ limit: l })}
+          />
+        )}
       </div>
     </div>
   );
