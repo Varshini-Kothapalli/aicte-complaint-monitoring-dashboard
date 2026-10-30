@@ -2,6 +2,7 @@ const { Router } = require('express');
 const healthRoutes = require('./health.routes');
 const caseRoutes = require('./case.routes');
 const institutionRoutes = require('./institution.routes');
+const monitoringRoutes = require('./monitoring.routes');
 
 const router = Router();
 
@@ -9,6 +10,7 @@ const router = Router();
 router.use('/health', healthRoutes);
 router.use('/cases', caseRoutes);
 router.use('/institutions', institutionRoutes);
+router.use('/', monitoringRoutes);
 
 // Root API information
 router.get('/', (req, res) => {
@@ -22,8 +24,11 @@ router.get('/', (req, res) => {
       caseDetail: '/api/v1/cases/:caseId',
       institutions: '/api/v1/institutions',
       institutionDetail: '/api/v1/institutions/:institutionId',
-      overlap: '/api/v1/overlap (Planned)',
-      reports: '/api/v1/reports (Planned)',
+      dashboard: '/api/v1/dashboard/summary',
+      attention: '/api/v1/attention',
+      duplicates: '/api/v1/duplicates',
+      reports: '/api/v1/reports',
+      users: '/api/v1/users',
     },
   });
 });

@@ -1,5 +1,5 @@
 const { Institution, Case } = require('../models');
-const { ACTIVE_CASE_STATUS, CASE_STATUS } = require('../models/constants');
+const { ACTIVE_CASE_STATUS, CASE_STATUS, PENDING_STATUS, IN_PROGRESS_STATUS } = require('../models/constants');
 const { escapeRegex } = require('../validators/query');
 const { CASE_PROJECTION } = require('./case.service');
 
@@ -20,6 +20,10 @@ async function caseStatsFor(institutionIds) {
         total_cases: { $sum: 1 },
         active_cases: { $sum: { $cond: [{ $in: ['$status', ACTIVE_CASE_STATUS] }, 1, 0] } },
         overdue_cases: { $sum: { $cond: ['$is_overdue', 1, 0] } },
+        pending_cases: { $sum: { $cond: [{ $in: ['$status', PENDING_STATUS] }, 1, 0] } },
+        in_progress_cases: { $sum: { $cond: [{ $in: ['$status', IN_PROGRESS_STATUS] }, 1, 0] } },
+        resolved_cases: { $sum: { $cond: [{ $eq: ['$status', 'Disposed'] }, 1, 0] } },
+        bureau_list: { $push: '$bureau' },
         active_bureau_list: { $addToSet: { $cond: [{ $in: ['$status', ACTIVE_CASE_STATUS] }, '$bureau', '$$REMOVE'] } },
       },
     },
@@ -32,6 +36,10 @@ async function caseStatsFor(institutionIds) {
       total_cases: r ? r.total_cases : 0,
       active_cases: r ? r.active_cases : 0,
       overdue_cases: r ? r.overdue_cases : 0,
+      pending_cases: r ? r.pending_cases : 0,
+      in_progress_cases: r ? r.in_progress_cases : 0,
+      resolved_cases: r ? r.resolved_cases : 0,
+      cases_by_bureau: r ? r.bureau_list.reduce((acc, b) => ({ ...acc, [b]: (acc[b] || 0) + 1 }), {}) : {},
       active_bureaus: active,
       multiple_bureaus_active: active.length > 1,
       provenance: 'DERIVED',

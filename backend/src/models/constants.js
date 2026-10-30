@@ -12,7 +12,11 @@ const USER_ROLES = ['bureau_head', 'bureau_officer', 'regional_official', 'senio
 const IDENTITY_STATUS = ['VERIFIED', 'VERIFICATION_QUEUE', 'UNRESOLVED'];
 const CASE_STATUS = ['Received', 'Assigned', 'Under Process', 'Action Initiated', 'Disposed'];
 const ACTIVE_CASE_STATUS = CASE_STATUS.filter((s) => s !== 'Disposed');
-const ACTION_TYPES = ['created', 'assigned', 'status_change', 'document', 'transfer', 'escalation'];
+// Administrative groupings shown on dashboards: pending = not yet being worked on.
+const PENDING_STATUS = ['Received', 'Assigned'];
+const IN_PROGRESS_STATUS = ['Under Process', 'Action Initiated'];
+// 'coordination' = an official's decision on a possible-duplicate pair (written by the review API).
+const ACTION_TYPES = ['created', 'assigned', 'status_change', 'document', 'transfer', 'escalation', 'coordination'];
 const TRANSFER_STATES = ['pending', 'accepted', 'rejected'];
 const PAIR_RELATIONS = ['same_matter', 'different_matter', 'duplicate_submission'];
 const BANDS = ['HIGH', 'MEDIUM', 'NONE'];
@@ -36,6 +40,8 @@ module.exports = {
   IDENTITY_STATUS,
   CASE_STATUS,
   ACTIVE_CASE_STATUS,
+  PENDING_STATUS,
+  IN_PROGRESS_STATUS,
   ACTION_TYPES,
   TRANSFER_STATES,
   PAIR_RELATIONS,

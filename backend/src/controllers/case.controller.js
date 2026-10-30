@@ -21,6 +21,8 @@ async function listCases(req, res) {
     aicte_permanent_id: q.id('aicte_permanent_id', /^[A-Za-z0-9-]{3,40}$/),
     from: q.date('from'),
     to: q.date('to'),
+    due_from: q.date('due_from'),
+    due_to: q.date('due_to'),
     q: q.text('q'),
   };
   if (params.from && params.to && params.from > params.to) q.errors.push('from must be on or before to');

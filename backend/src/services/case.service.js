@@ -1,6 +1,7 @@
 const { Case, Institution, Bureau, User, CaseAction, Transfer } = require('../models');
 const { escapeRegex } = require('../validators/query');
 const config = require('../config/env');
+const { personaFor } = require('../config/demoPersonas');
 
 /** Fields returned for case lists and details. Internal fields are excluded explicitly. */
 const CASE_PROJECTION = { _id: 0, __v: 0, complainant_hash: 0 };
@@ -44,14 +45,21 @@ async function buildCaseFilter(p) {
     if (f.institution_id && f.institution_id !== inst.institution_id) return null;
     f.institution_id = inst.institution_id;
   }
+  if (p.due_from || p.due_to) {
+    f.expected_disposal_date = {};
+    if (p.due_from) f.expected_disposal_date.$gte = p.due_from;
+    if (p.due_to) f.expected_disposal_date.$lt = new Date(p.due_to.getTime() + 24 * 3600 * 1000);
+  }
   if (p.from || p.to) {
     f.receipt_date = {};
     if (p.from) f.receipt_date.$gte = p.from;
     if (p.to) f.receipt_date.$lt = new Date(p.to.getTime() + 24 * 3600 * 1000); // inclusive end date
   }
   if (p.q) {
-    const re = new RegExp(escapeRegex(p.q), 'i');
-    const instIds = await institutionIdsMatching(p.q);
+    // Accept the on-screen form of IDs too: "PGRC/2026/0001" -> "PGRC-2026-0001", "INST-0001" already matches.
+    const text = /^[A-Za-z]{2,5}\/\d{4}\/\d{1,6}$/.test(p.q) ? p.q.replace(/\//g, '-') : p.q;
+    const re = new RegExp(escapeRegex(text), 'i');
+    const instIds = await institutionIdsMatching(text);
     f.$or = [{ case_id: re }, { subject: re }, { description: re }, { refs: re }, { raw_institution_name: re }];
     if (instIds.length) f.$or.push({ institution_id: { $in: instIds } });
   }
@@ -62,7 +70,14 @@ async function attachInstitutions(cases) {
   const ids = [...new Set(cases.map((c) => c.institution_id).filter(Boolean))];
   const insts = await Institution.find({ institution_id: { $in: ids } }, INSTITUTION_SUMMARY).lean();
   const byId = new Map(insts.map((i) => [i.institution_id, i]));
-  return cases.map((c) => ({ ...c, institution: c.institution_id ? byId.get(c.institution_id) || null : null }));
+  const officerIds = [...new Set(cases.map((c) => c.assigned_officer).filter(Boolean))];
+  const officers = await User.find({ user_id: { $in: officerIds } }, { _id: 0, user_id: 1, display_name: 1, provenance: 1 }).lean();
+  const officerById = new Map(officers.map((u) => [u.user_id, u]));
+  return cases.map((c) => ({
+    ...c,
+    institution: c.institution_id ? byId.get(c.institution_id) || null : null,
+    assigned_officer_display: c.assigned_officer ? personaFor(c.assigned_officer, officerById.get(c.assigned_officer)) : null,
+  }));
 }
 
 async function provenanceCounts(filter) {
@@ -101,13 +116,21 @@ async function getCase(caseId) {
   const users = await User.find({ user_id: { $in: userIds } }, { _id: 0, user_id: 1, display_name: 1, role: 1, bureau: 1, provenance: 1 }).lean();
   const userById = new Map(users.map((u) => [u.user_id, u]));
   const name = (id) => (id === 'system' ? 'System (automated)' : userById.get(id)?.display_name || null);
+  const display = (id) => (id ? personaFor(id, userById.get(id)) : null);
   return {
     ...c,
     institution,
     bureau_info: bureau,
     assigned_officer_info: c.assigned_officer ? userById.get(c.assigned_officer) || null : null,
-    actions: actions.map((a) => ({ ...a, actor_name: name(a.actor) })),
-    transfers: transfers.map((t) => ({ ...t, requested_by_name: name(t.requested_by), accepted_by_name: name(t.accepted_by) })),
+    assigned_officer_display: display(c.assigned_officer),
+    actions: actions.map((a) => ({ ...a, actor_name: name(a.actor), actor_display: display(a.actor) })),
+    transfers: transfers.map((t) => ({
+      ...t,
+      requested_by_name: name(t.requested_by),
+      accepted_by_name: name(t.accepted_by),
+      requested_by_display: display(t.requested_by),
+      accepted_by_display: display(t.accepted_by),
+    })),
   };
 }
 
