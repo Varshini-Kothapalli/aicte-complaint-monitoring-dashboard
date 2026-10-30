@@ -1,6 +1,5 @@
 import React from 'react';
 import { Link, useParams } from 'react-router-dom';
-import ProvenanceTag from '../components/ProvenanceTag';
 import Badge from '../components/Badge';
 import SyntheticNotice from '../components/SyntheticNotice';
 import { LoadingState, ErrorState, EmptyState } from '../components/DataState';
@@ -31,7 +30,6 @@ export default function InstitutionDetailPage() {
               <h2>{inst.name}</h2>
               <p>{inst.district}, {inst.state} · {inst.stream} · {inst.ownership} · Est. {inst.established}</p>
             </div>
-            <ProvenanceTag type={inst.provenance} />
           </div>
 
           <SyntheticNotice provenance={{ [inst.provenance]: 1 }} overdue={meta?.overdue} />
@@ -56,23 +54,19 @@ export default function InstitutionDetailPage() {
             <div className="metric-card">
               <span className="metric-label">Total cases</span>
               <div className="metric-value">{summary.total_cases}</div>
-              <div className="metric-footer"><ProvenanceTag type="DERIVED" /></div>
             </div>
             <div className="metric-card">
               <span className="metric-label">Active cases</span>
               <div className="metric-value">{summary.active_cases}</div>
-              <div className="metric-footer"><ProvenanceTag type="DERIVED" /></div>
             </div>
             <div className={`metric-card ${summary.overdue_cases ? 'metric-alert' : ''}`}>
               <span className="metric-label">Overdue (snapshot)</span>
               <div className="metric-value">{summary.overdue_cases}</div>
-              <div className="metric-footer"><ProvenanceTag type="DERIVED" /></div>
             </div>
             <div className="metric-card">
               <span className="metric-label">Bureaus with active cases</span>
               <div className="metric-value">{summary.active_bureaus.length}</div>
               <div className="metric-footer">
-                <ProvenanceTag type="DERIVED" />
                 <span className="metric-subtext">{summary.active_bureaus.join(', ') || 'none'}</span>
               </div>
             </div>
@@ -121,7 +115,7 @@ export default function InstitutionDetailPage() {
               <div className="table-wrapper">
                 <table className="data-table">
                   <thead>
-                    <tr><th>Case ID</th><th>Bureau</th><th>Category</th><th>Status</th><th>Received</th><th>Expected Disposal</th><th>Officer</th><th>Data</th></tr>
+                    <tr><th>Case ID</th><th>Bureau</th><th>Category</th><th>Status</th><th>Received</th><th>Expected Disposal</th><th>Officer</th></tr>
                   </thead>
                   <tbody>
                     {inst.cases.map((c) => (
@@ -139,7 +133,6 @@ export default function InstitutionDetailPage() {
                         <td>{formatDate(c.receipt_date)}</td>
                         <td>{formatDate(c.expected_disposal_date)}</td>
                         <td className="cell-code" style={{ fontSize: '0.75rem' }}>{c.assigned_officer || '—'}</td>
-                        <td><ProvenanceTag type={c.provenance} /></td>
                       </tr>
                     ))}
                   </tbody>

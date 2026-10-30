@@ -1,12 +1,10 @@
 import React from 'react';
-import ProvenanceTag from './ProvenanceTag';
 
 export default function MetricCard({ 
   label, 
   value, 
   subtext, 
   icon: Icon, 
-  provenance = 'SYNTHETIC',
   isAlert = false 
 }) {
   return (
@@ -21,7 +19,6 @@ export default function MetricCard({
       </div>
       <div className="metric-value">{value}</div>
       <div className="metric-footer">
-        <ProvenanceTag type={provenance} />
         {subtext && <span className="metric-subtext">{subtext}</span>}
       </div>
     </div>

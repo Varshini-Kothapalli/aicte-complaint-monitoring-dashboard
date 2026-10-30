@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useOutletContext, useSearchParams } from 'react-router-dom';
-import ProvenanceTag from '../components/ProvenanceTag';
 import Badge from '../components/Badge';
 import Pagination from '../components/Pagination';
 import SyntheticNotice from '../components/SyntheticNotice';
@@ -60,7 +59,6 @@ export default function CasesExplorerPage() {
           <h2>All Cases Explorer</h2>
           <p>Search, filter, and inspect institution-related cases across all Bureaus</p>
         </div>
-        <ProvenanceTag type="SYNTHETIC" />
       </div>
 
       <SyntheticNotice provenance={meta?.provenance} overdue={meta?.overdue} />
@@ -148,7 +146,6 @@ export default function CasesExplorerPage() {
                   <th>Received</th>
                   <th>Expected Disposal</th>
                   <th>Assigned Officer</th>
-                  <th>Data</th>
                   <th>Actions</th>
                 </tr>
               </thead>
@@ -185,7 +182,6 @@ export default function CasesExplorerPage() {
                     <td>{formatDate(c.receipt_date)}</td>
                     <td>{formatDate(c.expected_disposal_date)}</td>
                     <td className="cell-code" style={{ fontSize: '0.75rem' }}>{c.assigned_officer || '—'}</td>
-                    <td><ProvenanceTag type={c.provenance} /></td>
                     <td>
                       <Link className="btn btn-outline" style={{ padding: '0.25rem 0.5rem', fontSize: '0.75rem' }} to={`/cases/${c.case_id}`}>
                         <Eye size={12} /> View

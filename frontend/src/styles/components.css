@@ -10,7 +10,7 @@
 
 .metric-card {
   background: var(--bg-card);
-  border: 1px solid var(--border-color);
+  border: 1px solid var(--color-border);
   border-radius: 8px;
   padding: 1.25rem;
   box-shadow: var(--shadow-sm);
@@ -39,17 +39,17 @@
   width: 32px;
   height: 32px;
   border-radius: 6px;
-  background-color: var(--bg-slate);
+  background-color: rgba(8, 43, 91, 0.06);
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--primary-navy);
+  color: var(--color-primary);
 }
 
 .metric-value {
   font-size: 1.75rem;
   font-weight: 700;
-  color: var(--text-main);
+  color: var(--color-text);
   line-height: 1.2;
 }
 
@@ -65,7 +65,7 @@
 /* Card Container */
 .content-card {
   background: var(--bg-card);
-  border: 1px solid var(--border-color);
+  border: 1px solid var(--color-border);
   border-radius: 8px;
   box-shadow: var(--shadow-sm);
   margin-bottom: 1.5rem;
@@ -73,16 +73,17 @@
 
 .card-header {
   padding: 1rem 1.25rem;
-  border-bottom: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--color-border);
   display: flex;
   justify-content: space-between;
   align-items: center;
+  background-color: #FBFCFE;
 }
 
 .card-title {
   font-size: 1rem;
   font-weight: 600;
-  color: var(--text-main);
+  color: var(--color-text);
 }
 
 .card-body {
@@ -102,32 +103,32 @@
 }
 
 .data-table th {
-  background-color: var(--bg-slate);
+  background-color: #F8FAFC;
   color: var(--text-muted);
   font-weight: 600;
   font-size: 0.75rem;
   text-transform: uppercase;
   letter-spacing: 0.05em;
   padding: 0.75rem 1rem;
-  border-bottom: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--color-border);
 }
 
 .data-table td {
   padding: 0.875rem 1rem;
   border-bottom: 1px solid var(--border-subtle);
-  color: var(--text-main);
+  color: var(--color-text);
   vertical-align: middle;
 }
 
 .data-table tr:hover td {
-  background-color: #F8FAFC;
+  background-color: #F9FBFD;
 }
 
 .cell-code {
   font-family: var(--font-mono);
   font-size: 0.8125rem;
   font-weight: 500;
-  color: var(--primary-navy-light);
+  color: var(--color-primary);
 }
 
 /* Status Badges */
@@ -231,22 +232,22 @@
 }
 
 .btn-primary {
-  background-color: var(--primary-navy);
+  background-color: var(--color-primary);
   color: white;
 }
 
 .btn-primary:hover {
-  background-color: var(--primary-navy-dark);
+  background-color: var(--color-primary-hover);
 }
 
 .btn-outline {
-  border: 1px solid var(--border-color);
+  border: 1px solid var(--color-border);
   background-color: white;
-  color: var(--text-main);
+  color: var(--color-text);
 }
 
 .btn-outline:hover {
-  background-color: var(--bg-slate);
+  background-color: var(--color-background);
 }
 
 /* Filter Controls */
@@ -255,8 +256,8 @@
   flex-wrap: wrap;
   gap: 0.75rem;
   padding: 1rem 1.25rem;
-  border-bottom: 1px solid var(--border-color);
-  background-color: #FAFBFD;
+  border-bottom: 1px solid var(--color-border);
+  background-color: #FBFCFE;
 }
 
 .filter-select {

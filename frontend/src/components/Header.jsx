@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Search, Bell, ShieldCheck, Database, Server } from 'lucide-react';
+import { Search, ShieldCheck, Server } from 'lucide-react';
 import { fetchHealth } from '../services/api';
 
 export default function Header({ currentBureau = 'ALL', onBureauChange }) {
@@ -60,7 +60,6 @@ export default function Header({ currentBureau = 'ALL', onBureauChange }) {
       </div>
 
       <div className="header-right">
-        {/* Backend & DB Health Indicator */}
         <div 
           className="system-status-indicator"
           title={
@@ -77,7 +76,6 @@ export default function Header({ currentBureau = 'ALL', onBureauChange }) {
           </span>
         </div>
 
-        {/* User Profile Pill */}
         <div className="user-profile-widget">
           <div className="user-avatar">AD</div>
           <div className="user-info">

@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
-import ProvenanceTag from '../components/ProvenanceTag';
 import Pagination from '../components/Pagination';
 import SyntheticNotice from '../components/SyntheticNotice';
 import { LoadingState, ErrorState, EmptyState } from '../components/DataState';
@@ -39,7 +38,6 @@ export default function InstitutionsPage() {
           <h2>Institution Profiles</h2>
           <p>Institution-centric view: every institution with its cases across all Bureaus</p>
         </div>
-        <ProvenanceTag type="SYNTHETIC" />
       </div>
 
       <SyntheticNotice provenance={data ? Object.fromEntries(data.map((i) => [i.provenance, 1])) : undefined} overdue={meta?.overdue} />
@@ -101,7 +99,6 @@ export default function InstitutionsPage() {
                   <th>Region</th>
                   <th>Cases (active / total)</th>
                   <th>Bureaus with active cases</th>
-                  <th>Data</th>
                 </tr>
               </thead>
               <tbody>
@@ -128,7 +125,6 @@ export default function InstitutionsPage() {
                       {inst.case_summary.active_bureaus.length ? inst.case_summary.active_bureaus.join(', ') : '—'}
                       {inst.case_summary.multiple_bureaus_active && <div className="warn-text">Multiple Bureaus active</div>}
                     </td>
-                    <td><ProvenanceTag type={inst.provenance} /></td>
                   </tr>
                 ))}
               </tbody>

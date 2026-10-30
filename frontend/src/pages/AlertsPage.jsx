@@ -1,5 +1,4 @@
 import React from 'react';
-import ProvenanceTag from '../components/ProvenanceTag';
 import Badge from '../components/Badge';
 import { AlertTriangle, Clock, ShieldAlert } from 'lucide-react';
 
@@ -44,7 +43,6 @@ export default function AlertsPage() {
           <h2>SLA Alerts & Automated Escalation Queue</h2>
           <p>Two-tier statutory deadline monitoring and hierarchical automated notifications</p>
         </div>
-        <ProvenanceTag type="SYNTHETIC" />
       </div>
 
       {/* Escalation Policy Explainer */}

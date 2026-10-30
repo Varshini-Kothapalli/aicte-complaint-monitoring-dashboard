@@ -1,6 +1,5 @@
 import React from 'react';
 import { Link, useParams } from 'react-router-dom';
-import ProvenanceTag from '../components/ProvenanceTag';
 import Badge from '../components/Badge';
 import SyntheticNotice from '../components/SyntheticNotice';
 import { LoadingState, ErrorState, EmptyState } from '../components/DataState';
@@ -42,7 +41,6 @@ export default function CaseDetailPage() {
             <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
               <Badge status={c.status} />
               {c.is_overdue && <Badge status="overdue">Overdue</Badge>}
-              <ProvenanceTag type={c.provenance} />
             </div>
           </div>
 
@@ -73,7 +71,6 @@ export default function CaseDetailPage() {
           <div className="content-card">
             <div className="card-header">
               <span className="card-title">Institution</span>
-              {c.institution && <ProvenanceTag type={c.institution.provenance} />}
             </div>
             <div className="card-body">
               {c.institution ? (

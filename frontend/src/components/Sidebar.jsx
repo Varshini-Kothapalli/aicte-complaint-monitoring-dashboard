@@ -6,9 +6,8 @@ import {
   Building2, 
   GitCompare, 
   AlertTriangle, 
-  BarChart3, 
-  FileText,
-  HelpCircle 
+  BarChart3,
+  Info
 } from 'lucide-react';
 
 export default function Sidebar() {
@@ -60,7 +59,7 @@ export default function Sidebar() {
         >
           <GitCompare />
           <span>Overlap Detection</span>
-          <span className="nav-badge" style={{ backgroundColor: '#D97706' }}>87</span>
+          <span className="nav-badge" style={{ backgroundColor: 'var(--color-accent)', color: '#1F2937' }}>87</span>
         </NavLink>
 
         <NavLink 
@@ -83,12 +82,13 @@ export default function Sidebar() {
         </NavLink>
       </nav>
 
-      {/* Footer Notice */}
+      {/* Data Sources Disclosure */}
       <div className="sidebar-footer">
-        <div style={{ fontSize: '0.6875rem', color: '#64748B', lineHeight: '1.4' }}>
-          <div>AICTE Prototype Environment</div>
-          <div style={{ color: '#FCD34D', fontWeight: 600, marginTop: '2px' }}>
-            SYNTHETIC DEMO DATA
+        <div style={{ display: 'flex', alignItems: 'flex-start', gap: '0.5rem', fontSize: '0.6875rem', color: '#CBD5E1', lineHeight: '1.4' }}>
+          <Info size={14} style={{ flexShrink: 0, marginTop: '1px', color: 'var(--color-accent)' }} />
+          <div>
+            <div style={{ fontWeight: 600, color: '#F8FAFC', marginBottom: '2px' }}>Data Sources</div>
+            <div>The demonstration dataset includes synthetic records and imported records whose authenticity or relevance has not been fully verified.</div>
           </div>
         </div>
       </div>

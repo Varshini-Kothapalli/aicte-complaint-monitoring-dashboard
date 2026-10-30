@@ -13,16 +13,6 @@ export default function AppLayout() {
 
       {/* Main Workspace */}
       <div className="app-main">
-        {/* Global Demo Watermark Banner */}
-        <div className="demo-banner">
-          <div>
-            AICTE SMART INDIA HACKATHON 2026 PROTOTYPE &bull; <span className="highlight">EVALUATION ENVIRONMENT</span>
-          </div>
-          <div>
-            Data Provenance: <span className="highlight">SYNTHETIC + IMPORTED UNVERIFIED</span>
-          </div>
-        </div>
-
         {/* Global Header */}
         <Header 
           currentBureau={currentBureau} 

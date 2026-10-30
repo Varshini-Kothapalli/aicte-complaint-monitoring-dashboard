@@ -1,6 +1,5 @@
 import React from 'react';
 import MetricCard from '../components/MetricCard';
-import ProvenanceTag from '../components/ProvenanceTag';
 import Badge from '../components/Badge';
 import { 
   FolderKanban, 
@@ -23,7 +22,6 @@ export default function DashboardPage() {
           <p>Integrated institutional oversight across PGRC, Regulation Bureau, and Approval Bureau</p>
         </div>
         <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
-          <ProvenanceTag type="SYNTHETIC" />
           <span style={{ fontSize: '0.8125rem', color: 'var(--text-muted)' }}>
             Demo As-Of: <strong>31 October 2026</strong>
           </span>
@@ -37,14 +35,12 @@ export default function DashboardPage() {
           value="344" 
           subtext="Across 3 Bureaus"
           icon={FolderKanban}
-          provenance="SYNTHETIC"
         />
         <MetricCard 
           label="Overdue SLA Cases" 
           value="162" 
           subtext="Exceeded target disposal"
           icon={Clock}
-          provenance="DERIVED"
           isAlert={true}
         />
         <MetricCard 
@@ -52,14 +48,12 @@ export default function DashboardPage() {
           value="87" 
           subtext="Cross-Bureau alerts pending"
           icon={GitCompare}
-          provenance="DERIVED"
         />
         <MetricCard 
           label="Monitored Institutions" 
           value="61" 
           subtext="In 9 AICTE regions"
           icon={Building}
-          provenance="SYNTHETIC"
         />
       </div>
 
@@ -67,10 +61,9 @@ export default function DashboardPage() {
       <div className="content-card">
         <div className="card-header" style={{ backgroundColor: '#F8FAFC' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-            <Info size={18} color="#D97706" />
+            <Info size={18} color="var(--color-accent)" />
             <span className="card-title">Scripted Walkthrough Matter: ABC Engineering College (Pune)</span>
           </div>
-          <ProvenanceTag type="SYNTHETIC" />
         </div>
         <div className="card-body">
           <p style={{ fontSize: '0.875rem', color: 'var(--text-muted)', marginBottom: '1rem' }}>
@@ -99,11 +92,11 @@ export default function DashboardPage() {
                   <td><Badge status="under-process">Under Process</Badge></td>
                   <td>SYN-USR-PGRC-01</td>
                   <td>2026-10-20 (Overdue)</td>
-                  <td rowSpan={2} style={{ verticalAlign: 'middle', backgroundColor: '#FEF3C7', textAlign: 'center' }}>
-                    <div style={{ fontWeight: 700, color: '#B45309', fontSize: '0.75rem' }}>
+                  <td rowSpan={2} style={{ verticalAlign: 'middle', backgroundColor: '#FFF7DB', textAlign: 'center' }}>
+                    <div style={{ fontWeight: 700, color: '#8A6A00', fontSize: '0.75rem' }}>
                       COORDINATION REQUIRED
                     </div>
-                    <div style={{ fontSize: '0.6875rem', color: '#78350F' }}>
+                    <div style={{ fontSize: '0.6875rem', color: '#6B4F00' }}>
                       Score: 0.82 (High Band)
                     </div>
                   </td>
@@ -139,7 +132,6 @@ export default function DashboardPage() {
         <div className="content-card">
           <div className="card-header">
             <span className="card-title">Case Lifecycle Distribution</span>
-            <ProvenanceTag type="SYNTHETIC" />
           </div>
           <div className="card-body">
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
@@ -171,7 +163,6 @@ export default function DashboardPage() {
         <div className="content-card">
           <div className="card-header">
             <span className="card-title">Workload by Bureau</span>
-            <ProvenanceTag type="SYNTHETIC" />
           </div>
           <div className="card-body">
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>

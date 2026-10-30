@@ -1,5 +1,4 @@
 import React from 'react';
-import ProvenanceTag from '../components/ProvenanceTag';
 import { 
   BarChart3, 
   FileDown, 
@@ -57,7 +56,6 @@ export default function ReportsPage() {
           <h2>Reports & Analytics Hub</h2>
           <p>6 standard administrative report families specified in AICTE architecture</p>
         </div>
-        <ProvenanceTag type="SYNTHETIC" />
       </div>
 
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '1.25rem' }}>

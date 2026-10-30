@@ -1,7 +1,6 @@
 import React from 'react';
-import ProvenanceTag from '../components/ProvenanceTag';
 import Badge from '../components/Badge';
-import { GitCompare, Check, X, Link as LinkIcon, AlertCircle } from 'lucide-react';
+import { GitCompare, Check, X } from 'lucide-react';
 
 const SAMPLE_PAIRS = [
   {
@@ -62,7 +61,6 @@ export default function OverlapDetectionPage() {
           <h2>Cross-Bureau Overlap Detection & Coordination</h2>
           <p>Engine D2: Advisory overlap alerts, explainable match scoring, and official review actions</p>
         </div>
-        <ProvenanceTag type="SYNTHETIC" />
       </div>
 
       {/* Advisory Notice */}

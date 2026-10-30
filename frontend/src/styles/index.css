@@ -1,18 +1,27 @@
 :root {
-  --primary-navy: #1F3A5F;
-  --primary-navy-dark: #14273E;
-  --primary-navy-light: #2A4D7C;
-  --accent-gold: #D97706;
-  --accent-gold-light: #FEF3C7;
-  --bg-slate: #F8FAFC;
-  --bg-card: #FFFFFF;
-  --bg-sidebar: #0F172A;
-  --border-color: #E2E8F0;
-  --border-subtle: #EDF2F7;
+  --color-primary: #082B5B;
+  --color-primary-hover: #123C75;
+  --color-accent: #FFB900;
+  --color-background: #F5F7FA;
+  --color-surface: #FFFFFF;
+  --color-border: #DCE3EC;
+  --color-text: #172B45;
+  --color-text-muted: #64748B;
+
+  --primary-navy: var(--color-primary);
+  --primary-navy-dark: #061F42;
+  --primary-navy-light: var(--color-primary-hover);
+  --accent-gold: var(--color-accent);
+  --accent-gold-light: #FFF4D6;
+  --bg-slate: var(--color-background);
+  --bg-card: var(--color-surface);
+  --bg-sidebar: var(--color-primary);
+  --border-color: var(--color-border);
+  --border-subtle: #E6ECF5;
   
-  --text-main: #0F172A;
-  --text-muted: #64748B;
-  --text-light: #94A3B8;
+  --text-main: var(--color-text);
+  --text-muted: var(--color-text-muted);
+  --text-light: #7C8CA5;
   --text-inverse: #FFFFFF;
   
   --status-disposed: #059669;
@@ -23,7 +32,7 @@
   --status-action-bg: #FFFBEB;
   --status-assigned: #7C3AED;
   --status-assigned-bg: #F5F3FF;
-  --status-received: #64748B;
+  --status-received: #475569;
   --status-received-bg: #F1F5F9;
   --status-overdue: #DC2626;
   --status-overdue-bg: #FEF2F2;
@@ -31,9 +40,9 @@
   --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
   
-  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  --shadow-sm: 0 1px 2px 0 rgb(15 23 42 / 0.02);
+  --shadow-md: 0 4px 6px -1px rgb(15 23 42 / 0.06), 0 2px 4px -2px rgb(15 23 42 / 0.04);
+  --shadow-lg: 0 10px 15px -3px rgb(15 23 42 / 0.08), 0 4px 6px -4px rgb(15 23 42 / 0.06);
 }
 
 * {
