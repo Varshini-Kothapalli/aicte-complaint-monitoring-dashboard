@@ -18,6 +18,7 @@
     "seed:dry-run": "npm --prefix backend run seed:dry-run",
     "test:backend": "npm --prefix backend test",
     "build:frontend": "npm --prefix frontend run build",
+    "build": "npm --prefix frontend run build",
     "duplicates:scan": "npm --prefix backend run duplicates:scan"
   },
   "keywords": [

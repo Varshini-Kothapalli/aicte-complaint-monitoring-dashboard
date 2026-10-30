@@ -3,7 +3,15 @@
  * Preconfigured for backend REST API at /api/v1.
  */
 
-const API_BASE = '/api/v1';
+function resolveApiBase() {
+  const envUrl = (import.meta.env.VITE_API_BASE_URL || import.meta.env.VITE_API_URL || '').trim().replace(/\/+$/, '');
+  if (!envUrl) return '/api/v1';
+  if (envUrl.endsWith('/api/v1')) return envUrl;
+  if (envUrl.endsWith('/api')) return `${envUrl}/v1`;
+  return `${envUrl}/api/v1`;
+}
+
+const API_BASE = resolveApiBase();
 
 export async function fetchHealth() {
   try {
@@ -62,7 +70,7 @@ export async function apiGet(path, params = {}, { signal } = {}) {
     return { ok: true, status: res.status, data: body.data, meta: body.meta };
   } catch (error) {
     if (error.name === 'AbortError') return { ok: false, aborted: true };
-    return { ok: false, status: 0, error: 'Cannot reach the backend API. Is the server running on port 5000?' };
+    return { ok: false, status: 0, error: 'Cannot reach the backend API. Please verify server status and network connectivity.' };
   }
 }
 
@@ -100,7 +108,7 @@ export async function apiPost(path, body) {
     }
     return { ok: true, status: res.status, data: data.data, meta: data.meta };
   } catch (e) {
-    return { ok: false, status: 0, error: 'Cannot reach the backend API. Is the server running on port 5000?' };
+    return { ok: false, status: 0, error: 'Cannot reach the backend API. Please verify server status and network connectivity.' };
   }
 }
 

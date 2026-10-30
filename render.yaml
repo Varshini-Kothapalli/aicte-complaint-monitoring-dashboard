@@ -1,0 +1,24 @@
+# Render Blueprint Configuration
+# Deploy backend as a Web Service on Render
+services:
+  - type: web
+    name: aicte-complaint-backend
+    runtime: node
+    plan: free
+    rootDir: backend
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: MONGODB_URI
+        sync: false
+      - key: CORS_ORIGIN
+        sync: false
+      - key: API_PREFIX
+        value: /api/v1
+      - key: DATASET_SNAPSHOT_DATE
+        value: "2026-10-31"

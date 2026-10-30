@@ -46,7 +46,8 @@ async function connectDatabase() {
     connectionState.lastError = error.message;
     console.error('================================================================');
     console.error('[Database] Failed to connect to MongoDB:');
-    console.error(`  URI: ${uri}`);
+    const sanitizedUri = uri ? uri.replace(/\/\/([^:]+):([^@]+)@/, '//$1:****@') : '(empty)';
+    console.error(`  URI: ${sanitizedUri}`);
     console.error(`  Error: ${error.message}`);
     console.error('  TROUBLESHOOTING:');
     console.error('  1. Ensure MongoDB service is running (e.g., `net start MongoDB`).');
