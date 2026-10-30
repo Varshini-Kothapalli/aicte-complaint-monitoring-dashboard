@@ -2,23 +2,26 @@ import React, { useEffect, useState } from 'react';
 import { Link, useOutletContext, useSearchParams } from 'react-router-dom';
 import Badge from '../components/Badge';
 import Pagination from '../components/Pagination';
-import SyntheticNotice from '../components/SyntheticNotice';
 import { LoadingState, ErrorState, EmptyState } from '../components/DataState';
 import useApiResource from '../hooks/useApiResource';
 import { fetchCases } from '../services/api';
-import { BUREAUS, STATUSES, REGIONS, CATEGORIES, formatDate, humanize } from '../utils/format';
-import { RefreshCw, Eye, X } from 'lucide-react';
+import {
+  BUREAUS, STATUSES, REGIONS, CATEGORIES, formatDate, humanize, statusLabel, displayCaseId, displayInstitutionId,
+} from '../utils/format';
+import { RefreshCw, Eye, X, SlidersHorizontal } from 'lucide-react';
 
 const FILTER_KEYS = ['bureau', 'status', 'region', 'category', 'is_overdue', 'from', 'to', 'q', 'institution_id'];
+const MORE_KEYS = ['region', 'category', 'from', 'to'];
 
 export default function CasesExplorerPage() {
   const { currentBureau } = useOutletContext() || {};
   const [params, setParams] = useSearchParams();
   const get = (k, def = '') => params.get(k) ?? def;
+  const [showMore, setShowMore] = useState(MORE_KEYS.some((k) => params.get(k)));
 
   // Search box is debounced so typing does not fire a request per keystroke.
   const [searchInput, setSearchInput] = useState(get('q'));
-  useEffect(() => setSearchInput(get('q')), [params]); // keep box in sync with back/forward navigation
+  useEffect(() => setSearchInput(get('q')), [params]);
   useEffect(() => {
     const t = setTimeout(() => {
       if (searchInput.trim() !== get('q')) update({ q: searchInput.trim() });
@@ -33,7 +36,7 @@ export default function CasesExplorerPage() {
     setParams(next);
   }
 
-  // The header's Bureau scope applies when the user has not chosen a Bureau filter.
+  // The header's Bureau selection applies when no Bureau filter is chosen here.
   const bureau = get('bureau') || (currentBureau && currentBureau !== 'ALL' ? currentBureau : '');
   const query = {
     page: get('page', '1'),
@@ -48,72 +51,77 @@ export default function CasesExplorerPage() {
     q: get('q'),
     institution_id: get('institution_id'),
   };
-  const key = JSON.stringify(query);
-  const { data, meta, loading, error, details, reload } = useApiResource((opts) => fetchCases(query, opts), [key]);
+  const { data, meta, loading, error, details, reload } = useApiResource((opts) => fetchCases(query, opts), [JSON.stringify(query)]);
   const activeFilters = FILTER_KEYS.filter((k) => get(k));
+  const statusValue = get('status', 'ALL');
+  const isKnownStatus = statusValue === 'ALL' || STATUSES.includes(statusValue);
 
   return (
     <div>
       <div className="page-header">
         <div className="page-title-group">
-          <h2>All Cases Explorer</h2>
-          <p>Search, filter, and inspect institution-related cases across all Bureaus</p>
+          <h2>All Complaints</h2>
+          <p>Search and track complaints across all Bureaus</p>
         </div>
       </div>
 
-      <SyntheticNotice provenance={meta?.provenance} overdue={meta?.overdue} />
-
       <div className="content-card">
-        {/* Filters */}
         <div className="filter-bar">
-          <select className="filter-select" value={bureau || 'ALL'} onChange={(e) => update({ bureau: e.target.value })} aria-label="Bureau">
-            <option value="ALL">All Bureaus (PGRC, RB, AB)</option>
-            {BUREAUS.map((b) => <option key={b.code} value={b.code}>{b.name} ({b.code})</option>)}
-          </select>
-
-          <select className="filter-select" value={get('status', 'ALL')} onChange={(e) => update({ status: e.target.value })} aria-label="Status">
-            <option value="ALL">All Statuses</option>
-            {STATUSES.map((s) => <option key={s} value={s}>{s}</option>)}
-          </select>
-
-          <select className="filter-select" value={get('region', 'ALL')} onChange={(e) => update({ region: e.target.value })} aria-label="Region">
-            <option value="ALL">All Regions</option>
-            {REGIONS.map((r) => <option key={r} value={r}>{r}</option>)}
-          </select>
-
-          <select className="filter-select" value={get('category', 'ALL')} onChange={(e) => update({ category: e.target.value })} aria-label="Category">
-            <option value="ALL">All Categories</option>
-            {CATEGORIES.map((c) => <option key={c} value={c}>{humanize(c)}</option>)}
-          </select>
-
-          <select className="filter-select" value={get('is_overdue', 'ALL')} onChange={(e) => update({ is_overdue: e.target.value })} aria-label="Overdue">
-            <option value="ALL">Overdue: any</option>
-            <option value="true">Overdue only</option>
-            <option value="false">Not overdue</option>
-          </select>
-
-          <label className="filter-label">
-            Received from
-            <input type="date" className="filter-select" value={get('from')} onChange={(e) => update({ from: e.target.value })} />
-          </label>
-          <label className="filter-label">
-            to
-            <input type="date" className="filter-select" value={get('to')} onChange={(e) => update({ to: e.target.value })} />
-          </label>
-
           <input
             type="search"
-            placeholder="Case ID, institution, AICTE ID or keyword…"
+            placeholder="Search by case ID, institution or keyword"
             className="filter-select"
             style={{ width: '280px' }}
             value={searchInput}
             onChange={(e) => setSearchInput(e.target.value)}
-            aria-label="Search cases"
+            aria-label="Search complaints"
           />
+
+          <select className="filter-select" value={bureau || 'ALL'} onChange={(e) => update({ bureau: e.target.value })} aria-label="Bureau">
+            <option value="ALL">All Bureaus</option>
+            {BUREAUS.map((b) => <option key={b.code} value={b.code}>{b.code} – {b.name}</option>)}
+          </select>
+
+          <select className="filter-select" value={isKnownStatus ? statusValue : 'GROUP'} onChange={(e) => update({ status: e.target.value })} aria-label="Status">
+            <option value="ALL">All statuses</option>
+            {!isKnownStatus && <option value="GROUP" disabled>{statusValue.split(',').map(statusLabel).join(' or ')}</option>}
+            {STATUSES.map((s) => <option key={s} value={s}>{statusLabel(s)}</option>)}
+          </select>
+
+          <select className="filter-select" value={get('is_overdue', 'ALL')} onChange={(e) => update({ is_overdue: e.target.value })} aria-label="Overdue">
+            <option value="ALL">Overdue and on time</option>
+            <option value="true">Overdue only</option>
+            <option value="false">On time only</option>
+          </select>
+
+          <button type="button" className="btn btn-outline" aria-expanded={showMore} onClick={() => setShowMore((v) => !v)}>
+            <SlidersHorizontal size={14} /> More filters
+          </button>
+
+          {showMore && (
+            <div className="more-filters">
+              <select className="filter-select" value={get('region', 'ALL')} onChange={(e) => update({ region: e.target.value })} aria-label="Region">
+                <option value="ALL">All regions</option>
+                {REGIONS.map((r) => <option key={r} value={r}>{r}</option>)}
+              </select>
+              <select className="filter-select" value={get('category', 'ALL')} onChange={(e) => update({ category: e.target.value })} aria-label="Complaint type">
+                <option value="ALL">All complaint types</option>
+                {CATEGORIES.map((c) => <option key={c} value={c}>{humanize(c)}</option>)}
+              </select>
+              <label className="filter-label">
+                Received from
+                <input type="date" className="filter-select" value={get('from')} onChange={(e) => update({ from: e.target.value })} />
+              </label>
+              <label className="filter-label">
+                to
+                <input type="date" className="filter-select" value={get('to')} onChange={(e) => update({ to: e.target.value })} />
+              </label>
+            </div>
+          )}
 
           {activeFilters.length > 0 && (
             <button type="button" className="btn btn-outline" onClick={() => { setSearchInput(''); setParams(new URLSearchParams()); }}>
-              <X size={14} /> Clear filters
+              <X size={14} /> Clear
             </button>
           )}
           <button type="button" className="btn btn-outline" style={{ marginLeft: 'auto' }} onClick={reload} disabled={loading}>
@@ -123,14 +131,14 @@ export default function CasesExplorerPage() {
 
         {get('institution_id') && (
           <div className="row-muted" style={{ padding: '0.5rem 1.25rem' }}>
-            Showing cases for institution <span className="cell-code">{get('institution_id')}</span>
+            Showing complaints for institution {displayInstitutionId(get('institution_id'))}
           </div>
         )}
 
-        {loading && <LoadingState label="Loading cases…" />}
+        {loading && <LoadingState label="Loading complaints…" />}
         {!loading && error && <ErrorState message={error} details={details} onRetry={reload} />}
         {!loading && !error && data?.length === 0 && (
-          <EmptyState title="No cases match these filters" message="Try removing a filter or searching for a different keyword." />
+          <EmptyState title="No complaints match" message="Try removing a filter or searching for something else." />
         )}
 
         {!loading && !error && data?.length > 0 && (
@@ -140,19 +148,18 @@ export default function CasesExplorerPage() {
                 <tr>
                   <th>Case ID</th>
                   <th>Institution</th>
+                  <th>Complaint Subject</th>
                   <th>Bureau</th>
-                  <th>Subject</th>
                   <th>Status</th>
-                  <th>Received</th>
-                  <th>Expected Disposal</th>
                   <th>Assigned Officer</th>
-                  <th>Actions</th>
+                  <th>Target Resolution Date</th>
+                  <th><span className="sr-only">Action</span></th>
                 </tr>
               </thead>
               <tbody>
                 {data.map((c) => (
                   <tr key={c.case_id}>
-                    <td className="cell-code">{c.case_id}</td>
+                    <td className="cell-code">{displayCaseId(c.case_id)}</td>
                     <td>
                       {c.institution ? (
                         <>
@@ -161,29 +168,31 @@ export default function CasesExplorerPage() {
                         </>
                       ) : (
                         <>
-                          <strong>{c.raw_institution_name || 'Unknown institution'}</strong>
-                          <div className="warn-text">Identity {humanize(c.identity_status).toLowerCase()} – not linked</div>
+                          <strong>{c.raw_institution_name || 'Institution not identified'}</strong>
+                          <div className="warn-text">Institution not yet verified</div>
                         </>
                       )}
                     </td>
-                    <td><Badge status={c.bureau}>{c.bureau}</Badge></td>
                     <td>
                       {c.subject}
                       {humanize(c.category).toLowerCase() !== c.subject.toLowerCase() && <div className="row-muted">{humanize(c.category)}</div>}
                     </td>
+                    <td><Badge status={c.bureau}>{c.bureau}</Badge></td>
                     <td>
                       <Badge status={c.status} />
-                      {c.is_overdue && (
-                        <span style={{ marginLeft: '0.25rem' }}>
-                          <Badge status="overdue">Overdue</Badge>
-                        </span>
-                      )}
+                      {c.is_overdue && <div style={{ marginTop: '0.25rem' }}><Badge status="overdue">Overdue</Badge></div>}
                     </td>
-                    <td>{formatDate(c.receipt_date)}</td>
-                    <td>{formatDate(c.expected_disposal_date)}</td>
-                    <td className="cell-code" style={{ fontSize: '0.75rem' }}>{c.assigned_officer || '—'}</td>
                     <td>
-                      <Link className="btn btn-outline" style={{ padding: '0.25rem 0.5rem', fontSize: '0.75rem' }} to={`/cases/${c.case_id}`}>
+                      {c.assigned_officer_display ? (
+                        <>
+                          {c.assigned_officer_display.name}
+                          {c.assigned_officer_display.designation && <div className="row-muted">{c.assigned_officer_display.designation}</div>}
+                        </>
+                      ) : <span className="row-muted">Not yet assigned</span>}
+                    </td>
+                    <td>{formatDate(c.expected_disposal_date)}</td>
+                    <td>
+                      <Link className="btn btn-outline btn-sm" to={`/cases/${c.case_id}`} aria-label={`View ${displayCaseId(c.case_id)}`}>
                         <Eye size={12} /> View
                       </Link>
                     </td>
@@ -197,7 +206,7 @@ export default function CasesExplorerPage() {
         {!error && meta && (
           <Pagination
             meta={meta}
-            noun="cases"
+            noun="complaints"
             onPageChange={(p) => update({ page: p }, { resetPage: false })}
             onLimitChange={(l) => update({ limit: l })}
           />

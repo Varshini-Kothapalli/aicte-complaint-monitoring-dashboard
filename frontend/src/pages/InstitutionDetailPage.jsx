@@ -1,25 +1,29 @@
 import React from 'react';
 import { Link, useParams } from 'react-router-dom';
 import Badge from '../components/Badge';
-import SyntheticNotice from '../components/SyntheticNotice';
+import MetricCard from '../components/MetricCard';
 import { LoadingState, ErrorState, EmptyState } from '../components/DataState';
 import useApiResource from '../hooks/useApiResource';
-import { fetchInstitution } from '../services/api';
-import { formatDate, humanize } from '../utils/format';
-import { ArrowLeft, AlertTriangle } from 'lucide-react';
+import { fetchInstitution, fetchDuplicates } from '../services/api';
+import {
+  formatDate, humanize, statusLabel, displayCaseId, displayInstitutionId, verifiedAicteId, formatNumber,
+} from '../utils/format';
+import { ArrowLeft, AlertTriangle, FolderKanban, Hourglass, CheckCircle2, AlarmClock } from 'lucide-react';
 
 export default function InstitutionDetailPage() {
   const { institutionId } = useParams();
-  const { data: inst, meta, loading, error, code, reload } = useApiResource((opts) => fetchInstitution(institutionId, opts), [institutionId]);
+  const { data: inst, loading, error, code, reload } = useApiResource((opts) => fetchInstitution(institutionId, opts), [institutionId]);
+  const dups = useApiResource((opts) => fetchDuplicates({ institution_id: institutionId, status: 'pending', limit: 1 }, opts), [institutionId]);
   const summary = inst?.case_summary;
+  const pendingDuplicates = dups.meta?.total || 0;
 
   return (
     <div>
       <Link to="/institutions" className="back-link"><ArrowLeft size={14} /> All institutions</Link>
 
-      {loading && <div className="content-card"><LoadingState label="Loading institution profile…" /></div>}
+      {loading && <div className="content-card"><LoadingState label="Loading institution…" /></div>}
       {!loading && error && code === 'INSTITUTION_NOT_FOUND' && (
-        <div className="content-card"><EmptyState title="Institution not found" message={`There is no institution with ID ${institutionId}.`} /></div>
+        <div className="content-card"><EmptyState title="Institution not found" message={`There is no institution ${displayInstitutionId(institutionId)}.`} /></div>
       )}
       {!loading && error && code !== 'INSTITUTION_NOT_FOUND' && <div className="content-card"><ErrorState message={error} onRetry={reload} /></div>}
 
@@ -28,76 +32,69 @@ export default function InstitutionDetailPage() {
           <div className="page-header">
             <div className="page-title-group">
               <h2>{inst.name}</h2>
-              <p>{inst.district}, {inst.state} · {inst.stream} · {inst.ownership} · Est. {inst.established}</p>
+              <p>
+                {inst.district}, {inst.state} · {inst.region} region · {inst.stream} · {inst.ownership} · Est. {inst.established}
+              </p>
+              <p className="row-muted">
+                AICTE Permanent ID: {verifiedAicteId(inst) || 'not verified'} · Reference {displayInstitutionId(inst.institution_id)}
+              </p>
             </div>
           </div>
 
-          <SyntheticNotice provenance={{ [inst.provenance]: 1 }} overdue={meta?.overdue} />
-
           {inst.same_name_institutions.length > 0 && (
-            <div className="notice-bar" style={{ color: '#92400E', background: '#FFFBEB', borderColor: '#FDE68A' }}>
+            <div className="notice-bar" style={{ color: 'var(--tone-gold)', background: 'var(--accent-gold-light)', borderColor: 'var(--color-accent)' }}>
               <AlertTriangle size={16} />
               <span>
                 Another institution has the same name:{' '}
                 {inst.same_name_institutions.map((o, i) => (
                   <React.Fragment key={o.institution_id}>
                     {i > 0 && ', '}
-                    <Link className="table-link" to={`/institutions/${o.institution_id}`}>{o.institution_id}</Link> ({o.district}, {o.state})
+                    <Link className="table-link" to={`/institutions/${o.institution_id}`}>{o.district}, {o.state}</Link>
                   </React.Fragment>
                 ))}
-                . Complaints that give only the name must be matched using location or AICTE ID, never merged automatically.
+                . Check the location before linking a complaint to this institution.
               </span>
             </div>
           )}
 
           <div className="metrics-grid">
-            <div className="metric-card">
-              <span className="metric-label">Total cases</span>
-              <div className="metric-value">{summary.total_cases}</div>
-            </div>
-            <div className="metric-card">
-              <span className="metric-label">Active cases</span>
-              <div className="metric-value">{summary.active_cases}</div>
-            </div>
-            <div className={`metric-card ${summary.overdue_cases ? 'metric-alert' : ''}`}>
-              <span className="metric-label">Overdue (snapshot)</span>
-              <div className="metric-value">{summary.overdue_cases}</div>
-            </div>
-            <div className="metric-card">
-              <span className="metric-label">Bureaus with active cases</span>
-              <div className="metric-value">{summary.active_bureaus.length}</div>
-              <div className="metric-footer">
-                <span className="metric-subtext">{summary.active_bureaus.join(', ') || 'none'}</span>
-              </div>
-            </div>
+            <MetricCard label="Total Complaints" value={formatNumber(summary.total_cases)} icon={FolderKanban} tone="navy" />
+            <MetricCard label="Pending" value={formatNumber(summary.pending_cases)} icon={Hourglass} tone="orange" subtext={`${summary.in_progress_cases} more in progress`} />
+            <MetricCard label="Resolved" value={formatNumber(summary.resolved_cases)} icon={CheckCircle2} tone="green" />
+            <MetricCard label="Overdue" value={formatNumber(summary.overdue_cases)} icon={AlarmClock} tone="red" />
           </div>
 
           {summary.multiple_bureaus_active && (
-            <div className="notice-bar" style={{ color: '#1E3A8A', background: '#EFF6FF', borderColor: '#BFDBFE' }}>
+            <div className="notice-bar" style={{ color: 'var(--color-primary)', background: '#EEF3FA', borderColor: 'var(--color-border)' }}>
               <AlertTriangle size={16} />
               <span>
-                More than one Bureau is handling active cases at this institution. This is a coordination signal only: it does not
-                mean the cases are duplicates or related. Overlap scoring and official review are planned for roadmap phase 5.
+                {summary.active_bureaus.length} Bureaus ({summary.active_bureaus.join(', ')}) have open complaints about this institution.
+                This does not mean the complaints are duplicates.{' '}
+                {pendingDuplicates > 0 ? (
+                  <Link className="table-link" to={`/overlap?institution_id=${inst.institution_id}`}>
+                    {pendingDuplicates} possible duplicate pair{pendingDuplicates > 1 ? 's' : ''} awaiting review
+                  </Link>
+                ) : 'No possible duplicates are awaiting review.'}
               </span>
             </div>
           )}
 
           <div className="content-card">
-            <div className="card-header"><span className="card-title">Cases by Bureau</span></div>
+            <div className="card-header"><span className="card-title">Complaints by Bureau</span></div>
             <div className="card-body">
               {summary.by_bureau.length === 0 ? (
-                <p className="detail-text">No cases recorded for this institution.</p>
+                <p className="detail-text">No complaints recorded for this institution.</p>
               ) : (
                 <div className="bureau-summary">
                   {summary.by_bureau.map((b) => (
-                    <div key={b.bureau} className="bureau-summary-item">
+                    <Link key={b.bureau} className="bureau-summary-item table-link" style={{ fontWeight: 400 }} to={`/cases?institution_id=${inst.institution_id}&bureau=${b.bureau}`}>
                       <Badge status={b.bureau}>{b.bureau}</Badge>
-                      <strong>{b.active} active</strong>
-                      {b.total} total · {b.overdue} overdue
+                      <strong>{b.total} complaint{b.total === 1 ? '' : 's'}</strong>
+                      {b.active} open · {b.total - b.active} resolved · {b.overdue} overdue
                       <div className="row-muted">
-                        {Object.entries(b.by_status).filter(([, n]) => n > 0).map(([s, n]) => `${s}: ${n}`).join(' · ')}
+                        {Object.entries(b.by_status).filter(([, n]) => n > 0).map(([s, n]) => `${statusLabel(s)}: ${n}`).join(' · ')}
                       </div>
-                    </div>
+                    </Link>
                   ))}
                 </div>
               )}
@@ -106,33 +103,32 @@ export default function InstitutionDetailPage() {
 
           <div className="content-card">
             <div className="card-header">
-              <span className="card-title">All cases at this institution ({inst.cases.length})</span>
-              <Link className="btn btn-outline" to={`/cases?institution_id=${inst.institution_id}`}>Open in Cases Explorer</Link>
+              <span className="card-title">All complaints about this institution ({inst.cases.length})</span>
+              <Link className="btn btn-outline" to={`/cases?institution_id=${inst.institution_id}`}>Search these complaints</Link>
             </div>
             {inst.cases.length === 0 ? (
-              <EmptyState title="No cases" />
+              <EmptyState title="No complaints" />
             ) : (
               <div className="table-wrapper">
                 <table className="data-table">
                   <thead>
-                    <tr><th>Case ID</th><th>Bureau</th><th>Category</th><th>Status</th><th>Received</th><th>Expected Disposal</th><th>Officer</th></tr>
+                    <tr><th>Case ID</th><th>Complaint Subject</th><th>Bureau</th><th>Status</th><th>Received</th><th>Target Resolution Date</th></tr>
                   </thead>
                   <tbody>
                     {inst.cases.map((c) => (
                       <tr key={c.case_id}>
-                        <td><Link className="table-link cell-code" to={`/cases/${c.case_id}`}>{c.case_id}</Link></td>
+                        <td><Link className="table-link cell-code" to={`/cases/${c.case_id}`}>{displayCaseId(c.case_id)}</Link></td>
+                        <td>
+                          {c.subject}
+                          {humanize(c.category).toLowerCase() !== c.subject.toLowerCase() && <div className="row-muted">{humanize(c.category)}</div>}
+                        </td>
                         <td><Badge status={c.bureau}>{c.bureau}</Badge></td>
                         <td>
-                          {humanize(c.category)}
-                          {humanize(c.category).toLowerCase() !== c.subject.toLowerCase() && <div className="row-muted">{c.subject}</div>}
-                        </td>
-                        <td>
                           <Badge status={c.status} />
-                          {c.is_overdue && <span style={{ marginLeft: '0.25rem' }}><Badge status="overdue">Overdue</Badge></span>}
+                          {c.is_overdue && <div style={{ marginTop: '0.25rem' }}><Badge status="overdue">Overdue</Badge></div>}
                         </td>
                         <td>{formatDate(c.receipt_date)}</td>
                         <td>{formatDate(c.expected_disposal_date)}</td>
-                        <td className="cell-code" style={{ fontSize: '0.75rem' }}>{c.assigned_officer || '—'}</td>
                       </tr>
                     ))}
                   </tbody>

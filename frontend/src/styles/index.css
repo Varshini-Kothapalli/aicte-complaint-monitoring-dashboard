@@ -129,3 +129,18 @@ input, select, textarea {
   color: #FCD34D;
   font-weight: 600;
 }
+
+/* Administrative accent colours (dashboard metrics and charts) */
+:root {
+  --tone-navy: var(--primary-navy);
+  --tone-orange: #EA580C;
+  --tone-orange-bg: #FFF7ED;
+  --tone-blue: #2563EB;
+  --tone-blue-bg: #EFF6FF;
+  --tone-green: #059669;
+  --tone-green-bg: #ECFDF5;
+  --tone-red: #DC2626;
+  --tone-red-bg: #FEF2F2;
+  --tone-gold: #8A6A00;          /* text on gold: matches the theme's dark gold */
+  --tone-gold-bg: var(--accent-gold-light);
+}

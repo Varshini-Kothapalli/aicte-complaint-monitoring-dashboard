@@ -1,5 +1,7 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
+import useApiResource from '../hooks/useApiResource';
+import { fetchDashboardSummary } from '../services/api';
 import { 
   LayoutDashboard, 
   FolderKanban, 
@@ -11,6 +13,10 @@ import {
 } from 'lucide-react';
 
 export default function Sidebar() {
+  // Live counts for the navigation badges (no fixed numbers).
+  const { data } = useApiResource((opts) => fetchDashboardSummary(opts), []);
+  const overdue = data?.totals?.overdue;
+  const duplicates = data?.totals?.possible_duplicates;
   return (
     <aside className="app-sidebar">
       {/* Brand Header */}
@@ -24,7 +30,7 @@ export default function Sidebar() {
 
       {/* Navigation Links */}
       <nav className="sidebar-nav">
-        <div className="nav-section-label">Monitoring & Oversight</div>
+        <div className="nav-section-label">Monitoring</div>
         
         <NavLink 
           to="/" 
@@ -32,7 +38,7 @@ export default function Sidebar() {
           className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}
         >
           <LayoutDashboard />
-          <span>Central Dashboard</span>
+          <span>Dashboard</span>
         </NavLink>
 
         <NavLink 
@@ -40,7 +46,7 @@ export default function Sidebar() {
           className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}
         >
           <FolderKanban />
-          <span>All Cases Explorer</span>
+          <span>All Complaints</span>
         </NavLink>
 
         <NavLink 
@@ -48,18 +54,18 @@ export default function Sidebar() {
           className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}
         >
           <Building2 />
-          <span>Institution Profiles</span>
+          <span>Institutions</span>
         </NavLink>
 
-        <div className="nav-section-label">Intelligence Engines</div>
+        <div className="nav-section-label">Review &amp; Action</div>
 
         <NavLink 
           to="/overlap" 
           className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}
         >
           <GitCompare />
-          <span>Overlap Detection</span>
-          <span className="nav-badge" style={{ backgroundColor: 'var(--color-accent)', color: '#1F2937' }}>87</span>
+          <span>Possible Duplicates</span>
+          {duplicates > 0 && <span className="nav-badge" style={{ backgroundColor: 'var(--color-accent)', color: '#1F2937' }} aria-label={`${duplicates} awaiting review`}>{duplicates}</span>}
         </NavLink>
 
         <NavLink 
@@ -67,18 +73,18 @@ export default function Sidebar() {
           className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}
         >
           <AlertTriangle />
-          <span>Alerts & Escalations</span>
-          <span className="nav-badge">162</span>
+          <span>Pending Actions</span>
+          {overdue > 0 && <span className="nav-badge" aria-label={`${overdue} overdue`}>{overdue}</span>}
         </NavLink>
 
-        <div className="nav-section-label">Governance & Audit</div>
+        <div className="nav-section-label">Reports</div>
 
         <NavLink 
           to="/reports" 
           className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}
         >
           <BarChart3 />
-          <span>Reports & Analytics</span>
+          <span>Reports</span>
         </NavLink>
       </nav>
 

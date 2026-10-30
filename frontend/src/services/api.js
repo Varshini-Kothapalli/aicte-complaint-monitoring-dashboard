@@ -70,3 +70,38 @@ export const fetchCases = (params, opts) => apiGet('/cases', params, opts);
 export const fetchCase = (caseId, opts) => apiGet(`/cases/${encodeURIComponent(caseId)}`, {}, opts);
 export const fetchInstitutions = (params, opts) => apiGet('/institutions', params, opts);
 export const fetchInstitution = (institutionId, opts) => apiGet(`/institutions/${encodeURIComponent(institutionId)}`, {}, opts);
+
+export const fetchDashboardSummary = (opts) => apiGet('/dashboard/summary', {}, opts);
+export const fetchAttention = (params, opts) => apiGet('/attention', params, opts);
+export const fetchDuplicates = (params, opts) => apiGet('/duplicates', params, opts);
+export const fetchDuplicate = (pairKey, opts) => apiGet(`/duplicates/${encodeURIComponent(pairKey)}`, {}, opts);
+export const fetchReports = (opts) => apiGet('/reports', {}, opts);
+export const fetchReport = (id, params, opts) => apiGet(`/reports/${encodeURIComponent(id)}`, params, opts);
+export const fetchUsers = (params, opts) => apiGet('/users', params, opts);
+
+/** URL that downloads a report as CSV (used as a link href). */
+export function reportCsvUrl(id, params = {}) {
+  const qs = new URLSearchParams({ format: 'csv' });
+  Object.entries(params).forEach(([k, v]) => v && qs.set(k, v));
+  return `${API_BASE}/reports/${encodeURIComponent(id)}?${qs}`;
+}
+
+/** POST a JSON body. Returns the same shape as apiGet. */
+export async function apiPost(path, body) {
+  try {
+    const res = await fetch(`${API_BASE}${path}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+      body: JSON.stringify(body),
+    });
+    const data = await res.json().catch(() => null);
+    if (!res.ok || !data || data.success === false) {
+      return { ok: false, status: res.status, error: data?.error?.message || `Request failed (HTTP ${res.status})`, code: data?.error?.code, details: data?.error?.details };
+    }
+    return { ok: true, status: res.status, data: data.data, meta: data.meta };
+  } catch (e) {
+    return { ok: false, status: 0, error: 'Cannot reach the backend API. Is the server running on port 5000?' };
+  }
+}
+
+export const recordDuplicateDecision = (pairKey, body) => apiPost(`/duplicates/${encodeURIComponent(pairKey)}/decision`, body);
